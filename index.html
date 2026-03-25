@@ -273,6 +273,99 @@ body.dragging-active{
 #start-screen ul{color:rgba(255,255,255,.6);font-size:13px;line-height:2.1;text-align:left;max-width:360px;padding-left:18px;}
 .btn-gold{background:linear-gradient(135deg,#c9a84c,#e8c97a,#c9a84c);color:#09111e;border:none;border-radius:40px;padding:13px 44px;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 22px rgba(201,168,76,.45);transition:transform .15s,box-shadow .15s;}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.6);}
+/* MOBILE TABLE SCALE FIX */
+@media (max-width: 768px){
+  #main{
+    padding:8px 6px 20px;
+    gap:8px;
+  }
+
+  #instructions{
+    font-size:10px;
+    line-height:1.5;
+    padding:6px 10px;
+  }
+
+  #table-area{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:visible;
+    padding:12px 6px;
+    display:flex;
+    justify-content:center;
+  }
+
+  #table{
+    transform:scale(0.72);
+    transform-origin:top center;
+    margin:0 auto -145px auto;
+  }
+
+  #check-btn{
+    font-size:14px;
+    padding:10px 28px;
+  }
+
+  #tray-section{
+    width:min(96vw, 900px);
+    padding:10px 10px 14px;
+  }
+
+  #tray{
+    gap:10px;
+    min-height:100px;
+  }
+
+  .nap-card{
+    transform:scale(0.92);
+    transform-origin:center;
+  }
+
+  .hud-box{
+    min-width:58px;
+    padding:4px 10px;
+  }
+
+  .hud-val{
+    font-size:18px;
+  }
+
+  .logo-wrap img{
+    height:38px;
+  }
+
+  .logo-text{
+    font-size:10px;
+  }
+
+  .logo-text span{
+    font-size:8px;
+  }
+}@media (max-width: 480px){
+  #table{
+    transform:scale(0.58);
+    transform-origin:top center;
+    margin:0 auto -220px auto;
+  }
+
+  #instructions{
+    font-size:9px;
+  }
+
+  #check-btn{
+    font-size:13px;
+    padding:9px 24px;
+  }
+
+  .hud-val{
+    font-size:16px;
+  }
+
+  .hud-box{
+    min-width:52px;
+    padding:4px 8px;
+  }
+}
 </style>
 </head>
 <body>

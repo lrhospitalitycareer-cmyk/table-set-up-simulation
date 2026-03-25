@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>F&B Table Setup Training Simulator</title>
 <style>
-/* System font stack — works offline, no CDN required */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
 
 :root{
   --navy:#1a2744; --gold:#c9a84c; --gold-light:#e8c97a;
@@ -13,99 +13,69 @@
   --green:#3d9a50;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-
-/*
-  CROSS-DEVICE VIEWPORT FIX
-  ─────────────────────────
-  iOS Safari: 100vh > visible area when address bar is visible.
-  The reliable fix is position:fixed on body with inset:0 — the browser
-  pins the element to the exact visual viewport, no JS variable needed.
-  Chrome/Android: position:fixed;inset:0 is also perfectly safe.
-  We do NOT put position:fixed on <html> — that breaks Chrome's stacking context.
-*/
-html{
-  height:100%;
-  overflow:hidden;
-}
+html,body{height:100%;overflow-x:hidden;}
 body{
-  /* Pin to the true visual viewport on every platform */
-  position:fixed;
-  inset:0;                   /* top:0; right:0; bottom:0; left:0 */
-  width:100%;
-  /* dvh = dynamic viewport height (shrinks when address bar visible).
-     Falls back to 100% which inherits from html above. */
-  height:100%;
   background:linear-gradient(160deg,#08111f 0%,#12213a 50%,#08111f 100%);
-  font-family:Georgia,'Times New Roman',serif;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-  overscroll-behavior:none;
-  -webkit-overflow-scrolling:auto;
-  /* Safe area insets: iPhone home bar / notch */
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  user-select:none;
+  font-family:'Lato',sans-serif;min-height:100vh;user-select:none;
 }
-
+body.dragging-active{
+  overflow:hidden;
+  touch-action:none;
+}
 /* HEADER */
 #header{
   background:linear-gradient(90deg,#060e1c 0%,#1a2744 30%,#1a2744 70%,#060e1c 100%);
-  border-bottom:2px solid var(--gold);padding:7px 14px;
+  border-bottom:2px solid var(--gold);padding:9px 16px;
   display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;z-index:1000;box-shadow:0 4px 24px rgba(0,0,0,.6);
+  position:sticky;top:0;z-index:1000;box-shadow:0 4px 24px rgba(0,0,0,.6);
 }
 .logo-wrap{display:flex;align-items:center;gap:10px;}
 .logo-wrap img{height:46px;width:auto;filter:drop-shadow(0 2px 6px rgba(201,168,76,.45));}
-.logo-text{font-family:Georgia,serif;color:var(--gold);font-size:12px;line-height:1.35;font-weight:600;}
+.logo-text{font-family:'Playfair Display',serif;color:var(--gold);font-size:12px;line-height:1.35;font-weight:600;}
 .logo-text span{color:rgba(255,255,255,.65);font-size:10px;font-weight:300;}
 .hud{display:flex;gap:12px;}
 .hud-box{text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.28);border-radius:8px;padding:5px 14px;min-width:68px;}
 .hud-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
-.hud-val{font-family:Georgia,serif;font-size:22px;color:#fff;line-height:1.1;font-weight:700;}
+.hud-val{font-family:'Playfair Display',serif;font-size:22px;color:#fff;line-height:1.1;font-weight:700;}
 #timer-val{color:var(--gold-light);}
 #timer-val.urgent{color:#ff5f5f;animation:blink .5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* MAIN — fills all space between header and bottom, no scroll */
-#main{
-  flex:1;min-height:0;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-  gap:0;padding:0;
-}
+/* MAIN */
+#main{display:flex;flex-direction:column;align-items:center;padding:10px 8px 24px;gap:10px;}
 
-/* INSTRUCTIONS — compact single-line bar */
+/* INSTRUCTIONS */
 #instructions{
-  flex-shrink:0;
-  background:rgba(201,168,76,.1);border-bottom:1px solid rgba(201,168,76,.2);
-  padding:5px 12px;color:var(--gold-light);
-  font-size:10.5px;text-align:center;width:100%;line-height:1.5;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.28);
+  border-radius:8px;padding:7px 14px;color:var(--gold-light);
+  font-size:11.5px;text-align:center;max-width:920px;width:100%;line-height:1.7;
 }
 
-/* TABLE AREA — takes all remaining vertical space, horizontal scroll for wide table */
+/* TABLE SCROLL */
 #table-area{
-  flex:1;min-height:0;
-  overflow-x:auto;overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  display:flex;align-items:center;justify-content:center;
-  padding:10px 8px;
+  width:100%;max-width:940px;overflow-x:auto;overflow-y:visible;
+  -webkit-overflow-scrolling:touch;padding:20px 10px;
   scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent;
 }
-#table-area::-webkit-scrollbar{height:4px;width:4px;}
+#table-area::-webkit-scrollbar{height:4px;}
 #table-area::-webkit-scrollbar-thumb{background:rgba(201,168,76,.35);border-radius:2px;}
 
 /*
-  TABLE: 800 x 560 px (fixed geometry — do not change).
-  On small screens the table-area scrolls horizontally.
-  transform-origin keeps the table centred while scaling.
+  TABLE: 800 x 560 px (fixed).
+  cover-inner: 310 x 200 px.
+  Plate: 84 px diam, centre at PX=155, PY=100 inside cover-inner.
+
+  Cover positions (pixel-exact):
+    bottom: bottom:38px  → cover top  = 560-38-200 = 322
+    top:    top:38px     → cover btm  = 38+200     = 238  (gap 84 px ✓)
+    left:   left:44px    → centred vertically, rotated 90 CW
+    right:  right:44px   → centred vertically, rotated 90 CCW
 */
 #table{
   position:relative;width:800px;height:560px;margin:0 auto;
   background:var(--cloth);border-radius:30px;
   box-shadow:0 0 0 9px #c9a56a,0 0 0 17px #8b6610,0 24px 70px rgba(0,0,0,.65);
   overflow:visible;touch-action:none;
-  transform-origin:center center;
-  flex-shrink:0;
 }
 #table::before{
   content:'';position:absolute;inset:0;border-radius:26px;pointer-events:none;z-index:1;
@@ -132,23 +102,18 @@ body{
 
 /* COVERS */
 .cover{position:absolute;z-index:5;}
-.cover.bottom{bottom:24px; left:50%;transform:translateX(-50%);}
-.cover.top   {top:24px;    left:50%;transform:translateX(-50%) rotate(180deg);}
-.cover.left  {left:30px;   top:50%;transform:translateY(-50%) rotate(90deg);}
-.cover.right {right:30px;  top:50%;transform:translateY(-50%) rotate(-90deg);}
+.cover.bottom{bottom:38px; left:50%;transform:translateX(-50%);}
+.cover.top   {top:38px;    left:50%;transform:translateX(-50%) rotate(180deg);}
+.cover.left  {left:44px;   top:50%;transform:translateY(-50%) rotate(90deg);}
+.cover.right {right:44px;  top:50%;transform:translateY(-50%) rotate(-90deg);}
 .cover-inner{position:relative;width:310px;height:200px;}
 
 /* DINNER PLATE */
 .dinner-plate{
-  position:absolute;width:84px;height:84px;border-radius:50%;
-  background:radial-gradient(circle at 33% 33%,#ffffff 52%,#ede5dc 76%,#d8cfc5 100%);
-  border:2.5px solid #cdc4ba;
-  box-shadow:0 2px 10px rgba(0,0,0,.13),inset 0 1px 5px rgba(255,255,255,.9);
-  left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;
+  display:none;
 }
 .dinner-plate::after{
-  content:'';position:absolute;inset:8px;border-radius:50%;
-  border:1px solid rgba(200,190,180,.45);pointer-events:none;
+  display:none;
 }
 
 /* BLUEPRINT GUIDES */
@@ -164,113 +129,123 @@ body{
 .guide.snap-active{border-color:rgba(201,168,76,.78);background:rgba(201,168,76,.13);box-shadow:0 0 10px rgba(201,168,76,.22);}
 .guide.filled{border-color:rgba(61,154,80,.55);background:rgba(61,154,80,.08);}
 .guide-lbl{font-size:6.5px;color:rgba(90,108,135,.44);text-align:center;font-weight:700;letter-spacing:.4px;text-transform:uppercase;pointer-events:none;line-height:1.1;}
-
-/* TRAY SECTION — anchored at bottom, never pushed off screen */
-#tray-section{
-  flex-shrink:0;
-  width:100%;
-  /* Cap height so the tray never eats into the table area.
-     164px = header-row(22) + tray-header(30) + tray-row with tallest item (napkin card ~105px) + padding. */
-  max-height:164px;
-  overflow:hidden;
-  background:linear-gradient(180deg,rgba(24,37,65,.98) 0%,rgba(11,19,30,1) 100%);
-  border-top:2px solid rgba(201,168,76,.35);
-  padding:5px 8px 6px;
-  box-shadow:0 -4px 20px rgba(0,0,0,.5);
+.guide[data-type="napkin"]{
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
 }
-/* Title row with check button inline */
-#tray-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:4px;
-  padding-bottom:4px;
-  border-bottom:1px solid rgba(201,168,76,.18);
+.guide[data-type="napkin"] .guide-lbl{
+  font-size:9px;
+  color:rgba(90,108,135,.62);
+  letter-spacing:.8px;
+}
+.guide[data-type="napkin"].snap-active{
+  border:none !important;
+  background:rgba(201,168,76,.10) !important;
+  box-shadow:0 0 10px rgba(201,168,76,.18);
+  border-radius:6px;
+}
+.guide[data-type="napkin"].filled{
+  background:transparent !important;
+  box-shadow:none !important;
+}
+/* TRAY */
+#tray-section{
+  width:min(900px,98vw);
+  background:linear-gradient(180deg,rgba(24,37,65,.97) 0%,rgba(11,19,30,.99) 100%);
+  border:1px solid rgba(201,168,76,.28);border-radius:16px;
+  padding:10px 12px 16px;box-shadow:0 -4px 20px rgba(0,0,0,.45);
 }
 #tray-title{
-  font-family:Georgia,serif;color:var(--gold);
-  font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  white-space:nowrap;
+  font-family:'Playfair Display',serif;color:var(--gold);
+  font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+  text-align:center;margin-bottom:8px;
+  border-bottom:1px solid rgba(201,168,76,.18);padding-bottom:6px;
 }
-/* TRAY ROW — arrow + scroll container + arrow */
-#tray-row{
-  display:flex;align-items:center;gap:4px;
-}
-.tray-arrow{
-  flex-shrink:0;
-  background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);
-  color:var(--gold);border-radius:8px;
-  width:28px;height:28px;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:14px;font-weight:700;
-  transition:background .15s;touch-action:manipulation;
-  user-select:none;
-}
-.tray-arrow:hover{background:rgba(201,168,76,.3);}
-.tray-arrow:active{background:rgba(201,168,76,.45);transform:scale(.93);}
-/* TRAY — single horizontal row, scrolls sideways */
 #tray{
-  flex:1;min-width:0;
-  display:flex;flex-wrap:nowrap;
-  flex-direction:row;
-  gap:8px;
-  overflow-x:auto;overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
-  align-items:flex-end;
-  padding:3px 2px 5px;
-  scrollbar-width:none;
+  display:flex;flex-wrap:wrap;gap:14px;
+  justify-content:center;align-items:flex-end;
+  min-height:112px;padding:6px 4px 6px;
 }
-#tray::-webkit-scrollbar{display:none;}
 
-/* NAPKIN CARD — compact for single-row tray */
+/* NAPKIN CARD */
 .nap-card{
-  display:flex;flex-direction:column;align-items:center;gap:2px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  border-radius:10px;padding:4px 6px 5px;flex-shrink:0;
+  border-radius:12px;padding:8px 9px 8px;flex-shrink:0;
 }
-.fold-dots{display:flex;gap:5px;align-items:center;}
+.fold-dots{display:flex;gap:6px;align-items:center;}
 .fdot{
-  width:9px;height:9px;border-radius:50%;
+  width:11px;height:11px;border-radius:50%;
   background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.2);
   transition:background .2s,border-color .2s;
 }
-.fdot.done  {background:var(--green);border-color:var(--green);}
-.fdot.active{background:var(--gold); border-color:var(--gold);}
-.nap-info{font-size:8px;font-weight:700;color:rgba(255,255,255,.44);text-align:center;line-height:1.2;letter-spacing:.2px;}
+.fdot.done  {background:var(--green);  border-color:var(--green);}
+.fdot.active{background:var(--gold);   border-color:var(--gold);}
+.nap-info{font-size:9px;font-weight:700;color:rgba(255,255,255,.44);text-align:center;line-height:1.3;letter-spacing:.3px;}
 .fold-btn{
   background:linear-gradient(135deg,#c9a84c,#e8c97a);
-  color:#09111e;border:none;border-radius:16px;
-  padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:.5px;
-  cursor:pointer;white-space:nowrap;min-width:80px;
-  box-shadow:0 2px 8px rgba(201,168,76,.38);
+  color:#09111e;border:none;border-radius:20px;
+  padding:8px 20px;font-size:11.5px;font-weight:700;letter-spacing:.6px;
+  cursor:pointer;white-space:nowrap;min-width:100px;
+  box-shadow:0 3px 10px rgba(201,168,76,.38);
   transition:transform .1s;touch-action:manipulation;
 }
 .fold-btn:active{transform:scale(.92);}
 .fold-btn.ready{
   background:linear-gradient(135deg,#2c8a40,#48b85c);color:#fff;
-  box-shadow:0 2px 10px rgba(61,154,80,.44);
+  box-shadow:0 3px 12px rgba(61,154,80,.44);
   animation:rdyPulse 1.3s ease-in-out infinite;
 }
-@keyframes rdyPulse{0%,100%{box-shadow:0 2px 8px rgba(61,154,80,.44)}50%{box-shadow:0 3px 16px rgba(61,154,80,.72)}}
+@keyframes rdyPulse{0%,100%{box-shadow:0 3px 10px rgba(61,154,80,.44)}50%{box-shadow:0 4px 20px rgba(61,154,80,.72)}}
 .fold-btn:disabled{pointer-events:none;opacity:.6;}
 
-/* CHECK BUTTON — compact, lives in tray header */
-#check-btn,#check-btn-main{
+/* CHECK BUTTON */
+#check-btn{
   background:linear-gradient(135deg,#1a2744,#263d72);
-  color:var(--gold);border:1.5px solid var(--gold);
-  border-radius:30px;padding:6px 18px;
-  font-family:Georgia,serif;font-size:12px;font-weight:700;
-  cursor:pointer;letter-spacing:.8px;white-space:nowrap;flex-shrink:0;
-  transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.3);
+  color:var(--gold);border:2px solid var(--gold);
+  border-radius:40px;padding:11px 38px;
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
+  cursor:pointer;letter-spacing:1px;
+  transition:all .2s;box-shadow:0 4px 18px rgba(0,0,0,.32);
 }
-#check-btn,#check-btn-main:hover{background:#1a2744;box-shadow:0 3px 14px rgba(201,168,76,.35);}
+#check-btn:hover{background:#1a2744;box-shadow:0 4px 22px rgba(201,168,76,.35);}
 
 /* DRAG ITEMS — relative by default so they flow inside the tray */
-.item{position:relative;cursor:grab;touch-action:none;display:flex;align-items:center;justify-content:center;border-radius:4px;flex-shrink:0;}
+.item{
+  position:relative;
+  cursor:grab;
+  touch-action:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:4px;
+  flex-shrink:0;
+  -webkit-user-drag:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-transform:translateZ(0);
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  will-change:left, top, transform;
+}
+.item *{
+  pointer-events:none;
+}
 .item:active{cursor:grabbing;}
-.item.dragging{position:fixed!important;z-index:9999;box-shadow:0 10px 32px rgba(0,0,0,.52);transform:scale(1.12);}
-.item.placed{position:absolute!important;z-index:20;cursor:default;transform:scale(1.13);transform-origin:center center;}
-/* SVG children pass pointer events up to the .item div */
-.item svg{pointer-events:none;display:block;}
-
+.item.dragging{
+  position:fixed!important;
+  z-index:9999;
+  box-shadow:0 10px 32px rgba(0,0,0,.52);
+  transform:translateZ(0) scale(1.06);
+}
+.item.placed{
+  position:absolute!important;
+  z-index:20;
+  cursor:default;
+  transform:none;
+}
 @keyframes foldAnim{
   0%  {transform:scale(.72) rotate(-14deg);opacity:.35;}
   65% {transform:scale(1.14) rotate(3deg);opacity:1;}
@@ -285,18 +260,18 @@ body{
 #result-modal{position:fixed;inset:0;background:rgba(8,16,30,.97);z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
 #result-modal.show{display:flex;}
 .rcard{background:linear-gradient(140deg,#192540,#0c1526);border:2px solid var(--gold);border-radius:22px;padding:36px 44px;text-align:center;max-width:420px;width:92%;box-shadow:0 24px 70px rgba(0,0,0,.65);}
-.rtitle{font-family:Georgia,serif;color:var(--gold);font-size:24px;margin-bottom:4px;}
-.rscore{font-family:Georgia,serif;font-size:68px;color:#fff;font-weight:700;line-height:1;margin:12px 0;}
-.rgrade{font-size:17px;color:var(--gold-light);font-family:Georgia,serif;margin-bottom:12px;}
+.rtitle{font-family:'Playfair Display',serif;color:var(--gold);font-size:24px;margin-bottom:4px;}
+.rscore{font-family:'Playfair Display',serif;font-size:68px;color:#fff;font-weight:700;line-height:1;margin:12px 0;}
+.rgrade{font-size:17px;color:var(--gold-light);font-family:'Playfair Display',serif;margin-bottom:12px;}
 .rdet{color:rgba(255,255,255,.58);font-size:13px;line-height:2.1;border-top:1px solid rgba(201,168,76,.18);padding-top:12px;margin-top:6px;text-align:left;}
 .rdet span{color:var(--gold-light);float:right;}
 
 /* START SCREEN */
 #start-screen{position:fixed;inset:0;background:rgba(8,16,30,.97);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;}
-#start-screen h1{font-family:Georgia,serif;color:var(--gold);font-size:26px;text-align:center;letter-spacing:1px;}
+#start-screen h1{font-family:'Playfair Display',serif;color:var(--gold);font-size:26px;text-align:center;letter-spacing:1px;}
 #start-screen p{color:rgba(255,255,255,.68);font-size:14px;text-align:center;max-width:400px;line-height:1.85;}
 #start-screen ul{color:rgba(255,255,255,.6);font-size:13px;line-height:2.1;text-align:left;max-width:360px;padding-left:18px;}
-.btn-gold{background:linear-gradient(135deg,#c9a84c,#e8c97a,#c9a84c);color:#09111e;border:none;border-radius:40px;padding:13px 44px;font-family:Georgia,serif;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 22px rgba(201,168,76,.45);transition:transform .15s,box-shadow .15s;}
+.btn-gold{background:linear-gradient(135deg,#c9a84c,#e8c97a,#c9a84c);color:#09111e;border:none;border-radius:40px;padding:13px 44px;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 22px rgba(201,168,76,.45);transition:transform .15s,box-shadow .15s;}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.6);}
 </style>
 </head>
@@ -360,45 +335,16 @@ body{
     </div>
   </div>
 
-  <button id="check-btn" onclick="checkTable()" style="display:none"></button>
+  <button id="check-btn" onclick="checkTable()">Check Table ✓</button>
 
   <div id="tray-section">
-    <div id="tray-header">
-      <div id="tray-title">⬆ SERVICE TRAY — drag items to table</div>
-      <button id="check-btn-main" onclick="checkTable()">Check Table ✓</button>
-    </div>
-    <div id="tray-row">
-      <button class="tray-arrow" id="tray-left" onclick="scrollTray(-1)" aria-label="Scroll left">‹</button>
-      <div id="tray"></div>
-      <button class="tray-arrow" id="tray-right" onclick="scrollTray(1)" aria-label="Scroll right">›</button>
-    </div>
+    <div id="tray-title">SERVICE TRAY — drag items to the table</div>
+    <div id="tray"></div>
   </div>
 </div>
 
 <script>
 'use strict';
-
-// ══════════════════════════════════════════════
-// VIEWPORT HEIGHT — legacy helper for any CSS still using --app-h
-// Layout itself no longer depends on this (body uses position:fixed;inset:0).
-// ══════════════════════════════════════════════
-function setAppHeight(){
-  document.documentElement.style.setProperty('--app-h', window.innerHeight+'px');
-}
-setAppHeight();
-window.addEventListener('orientationchange', function(){
-  // iOS fires orientationchange before new dimensions settle — poll until stable
-  var prev=0, attempts=0;
-  var poll=setInterval(function(){
-    if(window.innerHeight!==prev||attempts>10){
-      clearInterval(poll);
-      setAppHeight();
-      scaleTable();
-    }
-    prev=window.innerHeight;
-    attempts++;
-  },80);
-});
 
 // ══════════════════════════════════════════════
 // AUDIO
@@ -469,15 +415,15 @@ const GDEFS=[
   {t:'knife',  dx: 63, dy:  0, w:22, h:66, s:'rect',   l:'Knife' },
   {t:'spoon',  dx: 93, dy:  0, w:22, h:66, s:'rect',   l:'Spoon' },
   {t:'bread',  dx:-110,dy:-22, w:54, h:54, s:'circle', l:'B&B'   },
-  {t:'glass',  dx: 70, dy:-66, w:44, h:52, s:'circle', l:'Glass' },
-  {t:'napkin', dx:  0, dy:  0, w:72, h:72, s:'circle', l:'Napkin'},
+  {t:'glass',  dx: 70, dy:-66, w:42, h:52, s:'rect',   l:'Glass' },
+  {t:'napkin', dx:  0, dy:  0, w:70, h:70, s:'rect', l:'Napkin'},
 ];
 
 // Rendered item sizes in tray and on table
 const SZ={
-  fork:  {w:26,h:80},  knife: {w:26,h:80},  spoon: {w:26,h:80},
-  bread: {w:56,h:56},  glass: {w:44,h:92},
-  napkin:{w:70,h:70},  salt:  {w:34,h:50},  pepper:{w:34,h:50}
+  fork:  {w:30,h:92},  knife: {w:30,h:92},  spoon: {w:30,h:92},
+  bread: {w:62,h:62},  glass: {w:50,h:74},
+  napkin:{w:82,h:82},  salt:  {w:38,h:56},  pepper:{w:38,h:56}
 };
 
 // ══════════════════════════════════════════════
@@ -501,44 +447,23 @@ function svgFork(){
 
 function svgKnife(){
   const n=_gid++;
-  return `<svg viewBox="0 0 26 92" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <linearGradient id="kh${n}" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"  stop-color="#8a9caa"/>
-    <stop offset="30%" stop-color="#ddeaf4"/>
-    <stop offset="55%" stop-color="#f0f6fc"/>
-    <stop offset="100%" stop-color="#9ab0be"/>
-  </linearGradient>
-  <linearGradient id="kb${n}" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"  stop-color="#7a8e9c"/>
-    <stop offset="35%" stop-color="#ccdae6"/>
-    <stop offset="60%" stop-color="#e8f2f8"/>
-    <stop offset="100%" stop-color="#8aa0ae"/>
-  </linearGradient>
-  <linearGradient id="kbo${n}" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0%"  stop-color="#6a7e8c"/>
-    <stop offset="50%" stop-color="#b8ccd8"/>
-    <stop offset="100%" stop-color="#7a8e9c"/>
-  </linearGradient>
-</defs>
-<!-- Handle: smooth, slightly wider, ivory-steel tone -->
-<rect x="8" y="42" width="10" height="46" rx="5" fill="url(#kh${n})"/>
-<!-- Handle rivet details -->
-<circle cx="13" cy="54" r="1.4" fill="rgba(100,120,135,.45)"/>
-<circle cx="13" cy="66" r="1.4" fill="rgba(100,120,135,.45)"/>
-<circle cx="13" cy="78" r="1.4" fill="rgba(100,120,135,.45)"/>
-<!-- Handle highlight -->
-<rect x="11.5" y="44" width="1.2" height="42" rx=".6" fill="rgba(255,255,255,.3)"/>
-<!-- Bolster: thick band, darker steel -->
-<rect x="7" y="37" width="12" height="7" rx="1.5" fill="url(#kbo${n})"/>
-<!-- Blade: long straight, slightly tapered, spine on left edge -->
-<path d="M10,5 Q10,3 13,3 Q15,3 16,5 L16,37 L10,37 Z" fill="url(#kb${n})"/>
-<!-- Blade spine (left side, slightly raised) -->
-<rect x="10" y="4" width="2" height="33" rx="1" fill="rgba(130,155,170,.55)"/>
-<!-- Blade edge highlight (right, cutting edge) -->
-<line x1="15.5" y1="6" x2="15.5" y2="36" stroke="rgba(255,255,255,.45)" stroke-width=".8" stroke-linecap="round"/>
-<!-- Tip rounding -->
-<ellipse cx="13" cy="4.5" rx="3" ry="2" fill="url(#kb${n})"/>
+  return `<svg viewBox="0 0 30 92" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="k${n}" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#687e90"/><stop offset="42%" stop-color="#d2e2ee"/><stop offset="100%" stop-color="#8ca4b6"/>
+</linearGradient></defs>
+<rect x="12" y="40" width="6" height="48" rx="3" fill="url(#k${n})"/>
+<rect x="10.5" y="35" width="9" height="7" rx="2" fill="url(#k${n})"/>
+<path d="M15 4
+         C19 5, 22 10, 22 17
+         L22 33
+         C22 36, 20 38, 17 38
+         L13 38
+         C11 38, 10 37, 10 35
+         L10 9
+         C10 6, 12 4.5, 15 4Z"
+      fill="url(#k${n})"/>
+<path d="M18.5 8 L18.5 32" stroke="rgba(255,255,255,.26)" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="14" y="42" width="1.5" height="42" rx="1" fill="rgba(255,255,255,.26)"/>
 </svg>`;}
 
 function svgSpoon(){
@@ -564,34 +489,32 @@ function svgBread(){
 
 function svgGlass(){
   const n=_gid++;
-  return `<svg viewBox="0 0 44 92" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <radialGradient id="gbowl${n}" cx="38%" cy="36%" r="60%">
-    <stop offset="0%"   stop-color="rgba(230,246,255,.85)"/>
-    <stop offset="40%"  stop-color="rgba(190,228,252,.55)"/>
-    <stop offset="100%" stop-color="rgba(140,200,240,.28)"/>
-  </radialGradient>
-  <radialGradient id="gfoot${n}" cx="40%" cy="40%" r="60%">
-    <stop offset="0%"   stop-color="rgba(220,240,255,.6)"/>
-    <stop offset="100%" stop-color="rgba(150,205,240,.25)"/>
-  </radialGradient>
-</defs>
-<!-- Wine glass bowl — large circle, top-down view -->
-<circle cx="22" cy="26" r="20" fill="url(#gbowl${n})" stroke="rgba(140,200,240,.75)" stroke-width="1.4"/>
-<!-- Bowl inner rim highlight -->
-<circle cx="22" cy="26" r="17" fill="none" stroke="rgba(220,242,255,.4)" stroke-width="1"/>
-<!-- Liquid fill suggestion -->
-<ellipse cx="21" cy="27" rx="13" ry="12" fill="rgba(180,215,245,.18)"/>
-<!-- Sheen on bowl -->
-<ellipse cx="15" cy="18" rx="5" ry="7" fill="rgba(255,255,255,.32)" transform="rotate(-20 15 18)"/>
-<!-- Stem — thin line connecting bowl to foot -->
-<line x1="22" y1="46" x2="22" y2="72" stroke="rgba(160,210,245,.8)" stroke-width="2.5" stroke-linecap="round"/>
-<!-- Stem highlight -->
-<line x1="22" y1="47" x2="22" y2="71" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round"/>
-<!-- Foot — small flat ellipse -->
-<ellipse cx="22" cy="76" rx="10" ry="3.5" fill="url(#gfoot${n})" stroke="rgba(140,200,240,.7)" stroke-width="1.2"/>
-<!-- Foot sheen -->
-<ellipse cx="19" cy="75" rx="4" ry="1.5" fill="rgba(255,255,255,.3)" transform="rotate(-10 19 75)"/>
+  return `<svg viewBox="0 0 50 74" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g${n}" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%"   stop-color="rgba(165,208,248,.28)"/>
+<stop offset="32%"  stop-color="rgba(225,245,255,.74)"/>
+<stop offset="68%"  stop-color="rgba(165,208,248,.22)"/>
+<stop offset="100%" stop-color="rgba(145,198,244,.42)"/>
+</linearGradient></defs>
+<path d="M15 8
+         C15 4, 35 4, 35 8
+         C35 18, 31 28, 27 34
+         L27 53
+         L31 53
+         C33 53, 35 54, 35 56
+         C35 58, 33 59, 31 59
+         L19 59
+         C17 59, 15 58, 15 56
+         C15 54, 17 53, 19 53
+         L23 53
+         L23 34
+         C19 28, 15 18, 15 8Z"
+      fill="url(#g${n})"
+      stroke="rgba(150,204,248,.82)"
+      stroke-width="1.4"/>
+<ellipse cx="25" cy="8" rx="10" ry="2.8" fill="rgba(218,241,255,.26)" stroke="rgba(150,204,248,.72)" stroke-width="1"/>
+<ellipse cx="25" cy="63" rx="9.5" ry="2.8" fill="rgba(150,204,248,.34)" stroke="rgba(150,204,248,.78)" stroke-width="1.1"/>
+<path d="M18 11 Q16 18 17 28" stroke="rgba(255,255,255,.52)" stroke-width="2" fill="none" stroke-linecap="round"/>
 </svg>`;}
 
 function svgNapkin(fold){
@@ -799,228 +722,131 @@ function napkinFold(id){
 
 // ══════════════════════════════════════════════
 // DRAG SYSTEM
-// Primary:  Pointer Events + setPointerCapture (Chrome, Android, iOS 13+)
-// Fallback: Touch Events on document           (iOS Safari < 13)
 // ══════════════════════════════════════════════
-let drag=null;
-const USE_POINTER=!!window.PointerEvent;
+let drag=null, dragMoved=false;
 
 function setupDrag(id){
   const el=document.getElementById(id);if(!el)return;
-  if(USE_POINTER){
-    el.addEventListener('pointerdown',e=>startDrag(e,id));
-  } else {
-    el.addEventListener('touchstart',e=>startDragTouch(e,id),{passive:false});
-    el.addEventListener('mousedown', e=>startDragMouse(e,id));
+
+  if(window.PointerEvent){
+    el.addEventListener('pointerdown', e=>startDrag(e,id), {passive:false});
+  }else{
+    el.addEventListener('mousedown',  e=>startDrag(e,id));
+    el.addEventListener('touchstart', e=>startDrag(e,id), {passive:false});
   }
 }
 
-/* ── Pointer Events path ── */
+function getP(e){
+  if(e.touches&&e.touches.length)return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.changedTouches&&e.changedTouches.length)return{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+  return{x:e.clientX,y:e.clientY};
+}
+
 function startDrag(e,id){
   if(!gameActive)return;
   const item=items[id];if(!item||item.placed)return;
-  if(e.target.classList.contains('fold-btn'))return;
-  initAudio();e.preventDefault();
+  if(e.target.closest && e.target.closest('.fold-btn'))return;
+
+  initAudio();
+  e.preventDefault();
+  dragMoved=false;
+
   const el=document.getElementById(id);
+  const p=getP(e);
   const r=el.getBoundingClientRect();
-  const ox=e.clientX-r.left, oy=e.clientY-r.top;
-  drag={id,ox,oy};
-  el.setPointerCapture(e.pointerId);
-  document.body.appendChild(el);
-  el.style.position='fixed';
-  el.style.left=(e.clientX-ox)+'px';
-  el.style.top =(e.clientY-oy)+'px';
-  el.style.zIndex='9999';
-  el.classList.add('dragging');
-  el.addEventListener('pointermove',onMv);
-  el.addEventListener('pointerup',  onUp);
-  el.addEventListener('pointercancel',onUp);
+
+  drag={
+    id,
+    sx:p.x,
+    sy:p.y,
+    ox:p.x-r.left,
+    oy:p.y-r.top,
+    pointerId:e.pointerId ?? null
+  };
+
+  if(e.pointerId!=null && el.setPointerCapture){
+    try{ el.setPointerCapture(e.pointerId); }catch(err){}
+  }
+
+  drag.el = el;
+drag.started = false;
 }
+
+if(window.PointerEvent){
+  document.addEventListener('pointermove', onMv, {passive:false});
+  document.addEventListener('pointerup', onUp, {passive:false});
+  document.addEventListener('pointercancel', onUp, {passive:false});
+}else{
+  document.addEventListener('mousemove', onMv);
+  document.addEventListener('touchmove', onMv, {passive:false});
+  document.addEventListener('mouseup', onUp);
+  document.addEventListener('touchend', onUp);
+  document.addEventListener('touchcancel', onUp);
+}
+
 function onMv(e){
-  if(!drag||drag.id!==this.id)return;
+  if(!drag)return;
   e.preventDefault();
-  this.style.left=(e.clientX-drag.ox)+'px';
-  this.style.top =(e.clientY-drag.oy)+'px';
-  hlGuides(e.clientX,e.clientY,drag.id);
+
+  if(e.pointerId!=null && drag.pointerId!=null && e.pointerId!==drag.pointerId)return;
+
+  const p=getP(e);
+  const moveDist=Math.hypot(p.x-drag.sx,p.y-drag.sy);
+
+  if(moveDist>6)dragMoved=true;
+
+  const el=document.getElementById(drag.id);if(!el)return;
+
+  // Start actual drag only after slight movement
+  if(!drag.started){
+    if(moveDist<6)return;
+
+    drag.started=true;
+    document.body.classList.add('dragging-active');
+    document.body.appendChild(el);
+
+    el.classList.add('dragging');
+    el.style.position='fixed';
+    el.style.left=(p.x-drag.ox)+'px';
+    el.style.top =(p.y-drag.oy)+'px';
+    el.style.zIndex='9999';
+  }
+
+  el.style.left=(p.x-drag.ox)+'px';
+  el.style.top =(p.y-drag.oy)+'px';
+
+  hlGuides(p.x,p.y,drag.id);
 }
+
 function onUp(e){
-  if(!drag||drag.id!==this.id)return;
-  const id=drag.id;
-  this.classList.remove('dragging');clearHL();
-  if(!trySnap(id,e.clientX,e.clientY))backToTray(id);
-  drag=null;
-  this.removeEventListener('pointermove',onMv);
-  this.removeEventListener('pointerup',  onUp);
-  this.removeEventListener('pointercancel',onUp);
-}
+  if(!drag)return;
 
-/* ── Touch Events fallback path (iOS Safari < 13) ── */
-function liftEl(id,cx,cy,ox,oy){
-  const el=document.getElementById(id);
-  document.body.appendChild(el);
-  el.style.position='fixed';
-  el.style.left=(cx-ox)+'px';
-  el.style.top =(cy-oy)+'px';
-  el.style.zIndex='9999';
-  el.classList.add('dragging');
-}
-function startDragTouch(e,id){
-  if(!gameActive)return;
-  const item=items[id];if(!item||item.placed)return;
-  if(e.target.classList.contains('fold-btn'))return;
-  initAudio();e.preventDefault();
-  const t=e.touches[0];
-  const el=document.getElementById(id);
-  const r=el.getBoundingClientRect();
-  drag={id,ox:t.clientX-r.left,oy:t.clientY-r.top};
-  liftEl(id,t.clientX,t.clientY,drag.ox,drag.oy);
-}
-function startDragMouse(e,id){
-  if(!gameActive)return;
-  const item=items[id];if(!item||item.placed)return;
-  if(e.target.classList.contains('fold-btn'))return;
-  initAudio();e.preventDefault();
-  const el=document.getElementById(id);
-  const r=el.getBoundingClientRect();
-  drag={id,ox:e.clientX-r.left,oy:e.clientY-r.top};
-  liftEl(id,e.clientX,e.clientY,drag.ox,drag.oy);
-}
-// Document-level handlers for touch fallback — fire regardless of where finger is
-document.addEventListener('touchmove',function(e){
-  if(!drag||USE_POINTER)return;
-  e.preventDefault();
-  const t=e.touches[0];
-  const el=document.getElementById(drag.id);if(!el)return;
-  el.style.left=(t.clientX-drag.ox)+'px';
-  el.style.top =(t.clientY-drag.oy)+'px';
-  hlGuides(t.clientX,t.clientY,drag.id);
-},{passive:false});
-document.addEventListener('touchend',function(e){
-  if(!drag||USE_POINTER)return;
-  const id=drag.id;
-  const t=e.changedTouches[0];
-  const el=document.getElementById(id);
-  if(el)el.classList.remove('dragging');
-  clearHL();
-  if(!trySnap(id,t.clientX,t.clientY))backToTray(id);
-  drag=null;
-});
-document.addEventListener('mouseup',function(e){
-  if(!drag||USE_POINTER)return;
-  const id=drag.id;
-  const el=document.getElementById(id);
-  if(el)el.classList.remove('dragging');
-  clearHL();
-  if(!trySnap(id,e.clientX,e.clientY))backToTray(id);
-  drag=null;
-});
-document.addEventListener('mousemove',function(e){
-  if(!drag||USE_POINTER)return;
-  const el=document.getElementById(drag.id);if(!el)return;
-  el.style.left=(e.clientX-drag.ox)+'px';
-  el.style.top =(e.clientY-drag.oy)+'px';
-  hlGuides(e.clientX,e.clientY,drag.id);
-});
+  if(e.pointerId!=null && drag.pointerId!=null && e.pointerId!==drag.pointerId)return;
 
-function backToTray(id){
-  const el=document.getElementById(id);if(!el)return;
-  const sz=SZ[items[id].type];
-  el.classList.remove('dragging','placed');
-  el.style.position='';
-  el.style.left=''; el.style.top='';
-  el.style.zIndex='';
-  el.style.width=sz.w+'px';
-  el.style.height=sz.h+'px';
-  playDrop();
-  if(items[id].type==='napkin'){
-    const card=document.getElementById(`card-${id}`);
-    if(card){card.insertBefore(el,card.children[1]);return;}
+  const id=drag.id;
+  const el=document.getElementById(id);
+  const p=getP(e);
+
+  if(el){
+    el.classList.remove('dragging');
+    if(drag.pointerId!=null && el.releasePointerCapture){
+      try{ el.releasePointerCapture(drag.pointerId); }catch(err){}
+    }
   }
-  document.getElementById('tray').appendChild(el);
-}
 
-function hlGuides(cx,cy,id){
-  const type=items[id].type;
-  Object.values(guides).forEach(g=>{
-    const r=g.el.getBoundingClientRect();
-    const d=Math.hypot(cx-(r.left+r.width/2),cy-(r.top+r.height/2));
-    if(d<85&&g.type===type&&!placedItems[g.el.id])g.el.classList.add('snap-active');
-    else g.el.classList.remove('snap-active');
-  });
-}
-function clearHL(){Object.values(guides).forEach(g=>g.el.classList.remove('snap-active'));}
+  document.body.classList.remove('dragging-active');
 
-function trySnap(id,dropX,dropY){
-  const item=items[id];
-  let best=null,bd=Infinity;
-  Object.entries(guides).forEach(([gid,g])=>{
-    if(g.type!==item.type||placedItems[gid])return;
-    const r=g.el.getBoundingClientRect();
-    const d=Math.hypot(dropX-(r.left+r.width/2),dropY-(r.top+r.height/2));
-    if(d<85&&d<bd){bd=d;best={gid,g};}
-  });
-  if(!best)return false;
-  if(item.type==='napkin'&&item.fold<3){
-    const el=document.getElementById(id);
-    el.classList.remove('shaking');void el.offsetWidth;el.classList.add('shaking');
-    setTimeout(()=>el.classList.remove('shaking'),380);
-    toast('Fold the napkin 3× to Bishop Hat first!');
-    playReject();backToTray(id);return true;
+  // If user only tapped/clicked and did not really drag, do nothing
+  if(!drag.started){
+    drag=null;
+    clearHL();
+    return;
   }
-  snapItem(id,best.gid,best.g);return true;
-}
 
-function snapItem(id,gid,g){
-  const el=document.getElementById(id);
-  const item=items[id];
-  const sz=SZ[item.type];
-  const r=g.el.getBoundingClientRect();
-  // Float to guide centre temporarily
-  el.classList.remove('dragging');
-  el.classList.add('placed');
-  el.style.position='fixed';
-  el.style.left=(r.left+r.width/2 -sz.w/2)+'px';
-  el.style.top =(r.top +r.height/2-sz.h/2)+'px';
-  el.style.zIndex='20';
-  setTimeout(()=>{
-    const gP=g.el.parentNode;
-    const gL=parseFloat(g.el.style.left),gT=parseFloat(g.el.style.top);
-    const gW=parseFloat(g.el.style.width),gH=parseFloat(g.el.style.height);
-    el.style.position='absolute';
-    el.style.left=(gL+(gW-sz.w)/2)+'px';
-    el.style.top =(gT+(gH-sz.h)/2)+'px';
-    el.style.zIndex='20';
-    gP.appendChild(el);
-  },55);
-  placedItems[gid]=id;item.placed=true;
-  g.el.classList.add('filled');playSnap();updateScore();
+  if(!trySnap(id,p.x,p.y))backToTray(id);
+  clearHL();
+  drag=null;
 }
-
-// ══════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════
-function toast(txt){
-  const m=document.createElement('div');
-  m.style.cssText=`position:fixed;top:16px;left:50%;transform:translateX(-50%);
-    background:rgba(185,48,38,.94);color:#fff;padding:9px 22px;border-radius:22px;
-    font-size:13px;font-weight:700;z-index:6000;pointer-events:none;
-    box-shadow:0 4px 18px rgba(0,0,0,.4);letter-spacing:.3px;`;
-  m.textContent=txt;document.body.appendChild(m);
-  setTimeout(()=>m.remove(),2400);
-}
-
-// ══════════════════════════════════════════════
-// TIMER
-// ══════════════════════════════════════════════
-function startTimer(){
-  timeLeft=90;updateTD();
-  timerInterval=setInterval(()=>{
-    timeLeft--;updateTD();
-    if(timeLeft<=15)document.getElementById('timer-val').classList.add('urgent');
-    if(timeLeft<=0){clearInterval(timerInterval);checkTable();}
-  },1000);
-}
-function updateTD(){document.getElementById('timer-val').textContent=timeLeft;}
 
 // ══════════════════════════════════════════════
 // SCORE
@@ -1066,30 +892,8 @@ function startGame(){
   initAudio();
   document.getElementById('start-screen').style.display='none';
   gameActive=true;buildCovers();populateTray();startTimer();
-  scaleTable();
   const ta=document.getElementById('table-area');
-  setTimeout(()=>{ta.scrollLeft=(ta.scrollWidth-ta.clientWidth)/2;},120);
-}
-
-function scaleTable(){
-  const ta=document.getElementById('table-area');
-  const tbl=document.getElementById('table');
-  const availW=ta.clientWidth - 20;
-  const availH=ta.clientHeight - 20;
-  const scaleW=availW/800;
-  const scaleH=availH/560;
-  const scale=Math.min(scaleW,scaleH,1); // never scale up beyond 1
-  tbl.style.transform=scale<1?`scale(${scale.toFixed(3)})`:'';
-  // Adjust table-area min dimensions so scroll works correctly at scale
-  tbl.style.marginTop = scale < 1 ? `${((560*scale-560)/2)}px` : '';
-  tbl.style.marginBottom = scale < 1 ? `${((560*scale-560)/2)}px` : '';
-}
-
-window.addEventListener('resize', function(){ setAppHeight(); scaleTable(); });
-
-function scrollTray(dir){
-  const tray=document.getElementById('tray');
-  tray.scrollBy({left:dir*160,behavior:'smooth'});
+  setTimeout(()=>{ta.scrollLeft=(ta.scrollWidth-ta.clientWidth)/2;},100);
 }
 
 function resetGame(){
@@ -1108,9 +912,150 @@ function resetGame(){
   document.getElementById('score-val').textContent='0%';
   document.getElementById('result-modal').classList.remove('show');
   gameActive=true;buildCovers();populateTray();startTimer();
-  scaleTable();
   const ta=document.getElementById('table-area');
   setTimeout(()=>{ta.scrollLeft=(ta.scrollWidth-ta.clientWidth)/2;},100);
+}
+// ══════════════════════════════════════════════
+// GUIDE HIGHLIGHT / SNAP / RETURN / TIMER
+// ══════════════════════════════════════════════
+
+function clearHL(){
+  Object.values(guides).forEach(g=>g.el.classList.remove('snap-active'));
+}
+
+function hlGuides(x,y,id){
+  clearHL();
+  const item=items[id];
+  if(!item)return;
+
+  Object.entries(guides).forEach(([gid,g])=>{
+    if(placedItems[gid])return;
+    if(item.type!==g.type)return;
+    if(item.type==='napkin' && item.fold<3)return;
+
+    const r=g.el.getBoundingClientRect();
+    const cx=r.left+r.width/2;
+    const cy=r.top+r.height/2;
+    const d=Math.hypot(x-cx,y-cy);
+
+    if(d<58)g.el.classList.add('snap-active');
+  });
+}
+
+function trySnap(id,x,y){
+  const item=items[id];
+  if(!item)return false;
+
+  let best=null, bestD=9999;
+
+  Object.entries(guides).forEach(([gid,g])=>{
+    if(placedItems[gid])return;
+    if(item.type!==g.type)return;
+    if(item.type==='napkin' && item.fold<3)return;
+
+    const r=g.el.getBoundingClientRect();
+    const cx=r.left+r.width/2;
+    const cy=r.top+r.height/2;
+    const d=Math.hypot(x-cx,y-cy);
+
+    if(d<60 && d<bestD){
+      best={gid,g};
+      bestD=d;
+    }
+  });
+
+  if(best){
+    snapItem(id,best.gid,best.g);
+    return true;
+  }
+  return false;
+}
+
+function snapItem(id,gid,g){
+  const el=document.getElementById(id);
+  const item=items[id];
+  const sz=SZ[item.type];
+  const gP=g.el.parentNode;
+
+  el.classList.remove('dragging');
+  el.classList.add('placed');
+
+  const gL=parseFloat(g.el.style.left) || 0;
+  const gT=parseFloat(g.el.style.top)  || 0;
+  const gW=parseFloat(g.el.style.width)  || g.el.offsetWidth;
+  const gH=parseFloat(g.el.style.height) || g.el.offsetHeight;
+
+  el.style.position='absolute';
+  el.style.left=(gL+(gW-sz.w)/2)+'px';
+  el.style.top =(gT+(gH-sz.h)/2)+'px';
+  el.style.zIndex='20';
+
+  gP.appendChild(el);
+
+  // If napkin came from tray card, remove card shell
+  if(item.type==='napkin'){
+    const card=document.getElementById(`card-${id}`);
+    if(card)card.remove();
+  }
+
+  placedItems[gid]=id;
+  item.placed=true;
+  g.el.classList.add('filled');
+  playSnap();
+  updateScore();
+}
+
+function backToTray(id){
+  const el=document.getElementById(id);
+  const item=items[id];
+  if(!el||!item)return;
+
+  el.classList.remove('dragging','placed','shaking');
+  el.style.position='relative';
+  el.style.left='';
+  el.style.top='';
+  el.style.zIndex='';
+  el.style.transform='';
+
+  const tray=document.getElementById('tray');
+
+  if(item.type==='napkin'){
+    let card=document.getElementById(`card-${id}`);
+    if(!card){
+      card=buildNapkinCard(id,el);
+      tray.appendChild(card);
+      setupDrag(id);
+    }else{
+      card.appendChild(el);
+      tray.appendChild(card);
+    }
+  }else{
+    tray.appendChild(el);
+  }
+
+  playDrop();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timeLeft=90;
+  const tv=document.getElementById('timer-val');
+  tv.textContent=timeLeft;
+  tv.classList.remove('urgent');
+
+  timerInterval=setInterval(()=>{
+    if(!gameActive)return;
+
+    timeLeft--;
+    tv.textContent=timeLeft;
+
+    if(timeLeft<=20)tv.classList.add('urgent');
+
+    if(timeLeft<=0){
+      clearInterval(timerInterval);
+      checkTable();
+    }
+  },1000);
 }
 </script>
 </body>

@@ -665,11 +665,6 @@ body.dragging-active{
 
 <!-- HEADER -->
 <div id="header">
-  <div class="brand-text">
-    LR Hospitality<br><span>Training Institute</span>
-  </div>
-
-  <header id="header">
   <div class="logo-wrap">
     <div class="brand-text">
       LR Hospitality
@@ -691,7 +686,8 @@ body.dragging-active{
       <div class="hud-val" id="score-val">0%</div>
     </div>
   </div>
-</header>
+</div>
+
 
 <!-- MAIN -->
 <div id="main">
@@ -1286,8 +1282,6 @@ function backToTray(id){
     items[id].cover=null;
   }
 }
-</script>
-
 // ══════════════════════════════════════════════
 // SCORE
 // ══════════════════════════════════════════════
@@ -1496,6 +1490,7 @@ function startTimer(){
       checkTable();
     }
   },1000);
+}
 /* =========================================
    MOBILE TABLE SCALE HEIGHT HELPER
 ========================================= */

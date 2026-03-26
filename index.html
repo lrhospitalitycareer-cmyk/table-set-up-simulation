@@ -167,11 +167,10 @@ body.dragging-active{
 
 /* COVERS */
 .cover{position:absolute;z-index:5;}
-.cover.bottom{bottom:38px; left:50%;transform:translateX(-50%);}
-.cover.top   {top:38px;    left:50%;transform:translateX(-50%) rotate(180deg);}
-.cover.left  {left:44px;   top:50%;transform:translateY(-50%) rotate(90deg);}
-.cover.right {right:44px;  top:50%;transform:translateY(-50%) rotate(-90deg);}
-.cover-inner{position:relative;width:310px;height:200px;}
+.cover.bottom{ bottom:48px; }
+.cover.top{ top:48px; }
+.cover.left{ left:48px; }
+.cover.right{ right:48px; }
 
 /* DINNER PLATE */
 .dinner-plate{
@@ -391,11 +390,14 @@ body.dragging-active{
   
   #table-area{
   width:100%;
-  overflow:hidden;
-  padding:8px 0 10px;
   display:flex;
   justify-content:center;
-  align-items:flex-start;
+  align-items:center;
+  padding:4px 0;
+  overflow:hidden;
+}
+#table{
+  zoom:0.72;
 }
 
   #check-btn{
@@ -438,7 +440,10 @@ body.dragging-active{
     grid-template-columns: 1fr auto auto;
     gap:8px;
     padding:8px 10px;
+    
   }
+  
+  
 
   .brand-text{
     font-size:9px;
@@ -466,6 +471,8 @@ body.dragging-active{
     line-height:1.45;
     padding:7px 8px;
   }
+  
+  
 
 
 

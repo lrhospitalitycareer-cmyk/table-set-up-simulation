@@ -262,8 +262,8 @@ body.dragging-active{
 /* GUIDE BLUEPRINTS */
 .guide{
   position:absolute;
-  border:1.5px dashed rgba(90,108,135,.38);
-  background:rgba(90,108,135,.04);
+  border:2px dashed rgba(201,168,76,.55);
+  background:rgba(201,168,76,.08);
   pointer-events:none;
   z-index:4;
   border-radius:4px;
@@ -289,13 +289,7 @@ body.dragging-active{
 }
 
 .guide-lbl{
-  font-size:6.5px;
-  color:rgba(90,108,135,.44);
-  text-transform:uppercase;
-  letter-spacing:.7px;
-  writing-mode:horizontal-tb;
-  text-align:center;
-  font-weight:700;
+  display:none;
 }
 
 /* napkin blueprint only */
@@ -581,13 +575,13 @@ body.dragging-active{
 }
 
 #guide-salt{
-  left:4px;
-  top:9px;
+  left:6px;
+  top:8px;
 }
 
 #guide-pepper{
-  right:4px;
-  top:9px;
+  right:6px;
+  top:8px;
 }
 
 .cruet-lbl{
@@ -970,22 +964,27 @@ const SEATS=['bottom','top','left','right'];
 //   Glass  L=155+70-21=204  R=246  T=8   B=60   ✓
 //   Napkin L=155-35=120     R=190  T=65  B=135  ✓ (on plate)
 // ══════════════════════════════════════════════
-const PX=155, PY=100;
+const PX=155, PY=110;
 
 const GDEFS=[
-  {t:'fork',   dx:-63, dy:  0, w:22, h:66, s:'rect',   l:'Fork'  },
-  {t:'knife',  dx: 63, dy:  0, w:22, h:66, s:'rect',   l:'Knife' },
-  {t:'spoon',  dx: 93, dy:  0, w:22, h:66, s:'rect',   l:'Spoon' },
-  {t:'bread',  dx:-110,dy:-22, w:54, h:54, s:'circle', l:'B&B'   },
-  {t:'glass',  dx: 70, dy:-66, w:42, h:52, s:'rect',   l:'Glass' },
-  {t:'napkin', dx:  0, dy:  0, w:70, h:70, s:'rect', l:'Napkin'},
+  {t:'napkin', dx:  0, dy:  16,  w:70, h:70, s:'rect',  l:'Napkin'},
+  {t:'fork',   dx:-78, dy: 16,  w:24, h:70, s:'rect',   l:'Fork'  },
+  {t:'knife',  dx: 78, dy:  0,  w:24, h:70, s:'rect',   l:'Knife' },
+  {t:'spoon',  dx:108, dy: 16,  w:24, h:70, s:'rect',   l:'Spoon' },
+  {t:'glass',  dx: 68, dy:-44,  w:44, h:56, s:'rect',   l:'Glass' },
+  {t:'bread',  dx:-112,dy:-42,  w:54, h:54, s:'circle', l:'B&B'   },
 ];
 
 // Rendered item sizes in tray and on table
 const SZ={
-  fork:  {w:30,h:92},  knife: {w:30,h:92},  spoon: {w:30,h:92},
-  bread: {w:62,h:62},  glass: {w:50,h:74},
-  napkin:{w:82,h:82},  salt:  {w:38,h:56},  pepper:{w:38,h:56}
+  fork:  {w:24,h:78},
+  knife: {w:24,h:78},
+  spoon: {w:24,h:78},
+  bread: {w:54,h:54},
+  glass: {w:44,h:64},
+  napkin:{w:70,h:70},
+  salt:  {w:28,h:44},
+  pepper:{w:28,h:44}
 };
 
 // ══════════════════════════════════════════════
@@ -1152,10 +1151,6 @@ function buildCovers(){
     cover.className=`cover ${seat}`;cover.id=`cover-${seat}`;
     const inner=document.createElement('div');
     inner.className='cover-inner';cover.appendChild(inner);
-
-    // Fixed dinner plate
-    const plate=document.createElement('div');
-    plate.className='dinner-plate';inner.appendChild(plate);
 
     // Blueprint guides
     GDEFS.forEach(gd=>{
@@ -1573,19 +1568,22 @@ function snapItem(id,gid,g){
   const el=document.getElementById(id);
   const item=items[id];
   const sz=SZ[item.type];
+  let offsetY = 0;
+  if(item.type === 'napkin') offsetY = 8;
   const gP=g.el.parentNode;
 
   el.classList.remove('dragging');
   el.classList.add('placed');
 
-  const gL=parseFloat(g.el.style.left) || 0;
-  const gT=parseFloat(g.el.style.top)  || 0;
-  const gW=parseFloat(g.el.style.width)  || g.el.offsetWidth;
-  const gH=parseFloat(g.el.style.height) || g.el.offsetHeight;
+  const rect = g.el.getBoundingClientRect();
+  const parentRect = g.el.parentNode.getBoundingClientRect();
 
-  el.style.position='absolute';
-  el.style.left=(gL+(gW-sz.w)/2)+'px';
-  el.style.top =(gT+(gH-sz.h)/2)+'px';
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  el.style.position = 'absolute';
+  el.style.left = (centerX - parentRect.left - sz.w/2) + 'px';
+  el.style.top  = (centerY - parentRect.top  - sz.h/2 + offsetY) + 'px';
   el.style.zIndex='20';
 
   gP.appendChild(el);

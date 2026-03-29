@@ -964,15 +964,15 @@ const SEATS=['bottom','top','left','right'];
 //   Glass  L=155+70-21=204  R=246  T=8   B=60   ✓
 //   Napkin L=155-35=120     R=190  T=65  B=135  ✓ (on plate)
 // ══════════════════════════════════════════════
-const PX=155, PY=110;
+const PX=155, PY=122;
 
 const GDEFS=[
-  {t:'napkin', dx:  0, dy:  16,  w:70, h:70, s:'rect',  l:'Napkin'},
-  {t:'fork',   dx:-78, dy: 16,  w:24, h:70, s:'rect',   l:'Fork'  },
-  {t:'knife',  dx: 78, dy:  0,  w:24, h:70, s:'rect',   l:'Knife' },
-  {t:'spoon',  dx:108, dy: 16,  w:24, h:70, s:'rect',   l:'Spoon' },
-  {t:'glass',  dx: 68, dy:-44,  w:44, h:56, s:'rect',   l:'Glass' },
-  {t:'bread',  dx:-112,dy:-42,  w:54, h:54, s:'circle', l:'B&B'   },
+  {t:'napkin', dx:   0, dy:  18, w:70, h:70, s:'rect',   l:'Napkin'},
+  {t:'fork',   dx: -70, dy:  18, w:24, h:70, s:'rect',   l:'Fork'  },
+  {t:'knife',  dx:  70, dy:  18, w:24, h:70, s:'rect',   l:'Knife' },
+  {t:'spoon',  dx:  95, dy:  18, w:24, h:70, s:'rect',   l:'Spoon' },
+  {t:'glass',  dx:  72, dy: -26, w:44, h:56, s:'rect',   l:'Glass' },
+  {t:'bread',  dx:-112, dy:  18, w:54, h:54, s:'circle', l:'B&B'   },
 ];
 
 // Rendered item sizes in tray and on table
@@ -1568,8 +1568,14 @@ function snapItem(id,gid,g){
   const el=document.getElementById(id);
   const item=items[id];
   const sz=SZ[item.type];
+  let offsetX = 0;
   let offsetY = 0;
-  if(item.type === 'napkin') offsetY = 8;
+  if(item.type === 'fork')  offsetX = -2;
+  if(item.type === 'knife') offsetX =  2;
+  if(item.type === 'spoon') offsetX =  2;
+  if(item.type === 'napkin') offsetY = 4;
+  if(item.type === 'glass')  { offsetX = -2; offsetY = -2; }
+  if(item.type === 'bread')  { offsetX = -2; offsetY =  2; }
   const gP=g.el.parentNode;
 
   el.classList.remove('dragging');
@@ -1582,7 +1588,7 @@ function snapItem(id,gid,g){
   const centerY = rect.top + rect.height / 2;
 
   el.style.position = 'absolute';
-  el.style.left = (centerX - parentRect.left - sz.w/2) + 'px';
+  elel.style.left = (centerX - parentRect.left - sz.w/2 + offsetX) + 'px';
   el.style.top  = (centerY - parentRect.top  - sz.h/2 + offsetY) + 'px';
   el.style.zIndex='20';
 

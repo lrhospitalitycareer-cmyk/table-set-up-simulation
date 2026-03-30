@@ -783,6 +783,13 @@ function trySnap(id,x,y){
   return false;
 }
 
+function getTableScale(){
+  const s=document.getElementById('table-scale');
+  if(!s)return 1;
+  const m=(s.style.transform||'').match(/scale\(([^)]+)\)/);
+  return m?parseFloat(m[1]):1;
+}
+
 function snapItem(id,gid,g){
   const el=document.getElementById(id);
   const item=items[id];
@@ -795,10 +802,11 @@ function snapItem(id,gid,g){
   const parentRect=g.el.parentNode.getBoundingClientRect();
   const cx=rect.left+rect.width/2;
   const cy=rect.top +rect.height/2;
+  const scale=getTableScale();
 
   el.style.position='absolute';
-  el.style.left=(cx - parentRect.left - sz.w/2)+'px';
-  el.style.top =(cy - parentRect.top  - sz.h/2)+'px';
+  el.style.left=((cx - parentRect.left)/scale - sz.w/2)+'px';
+  el.style.top =((cy - parentRect.top )/scale - sz.h/2)+'px';
   el.style.margin='0';
   el.style.zIndex='20';
 

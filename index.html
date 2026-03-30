@@ -24,17 +24,8 @@
   --green:#3d9a50;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-  height:100%;
-  overflow-x:hidden;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow-x:hidden;}
 
 body{
   background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg1) 100%);
@@ -42,11 +33,7 @@ body{
   min-height:100vh;
   user-select:none;
 }
-
-body.dragging-active{
-  overflow:hidden;
-  touch-action:none;
-}
+body.dragging-active{overflow:hidden;touch-action:none;}
 
 /* HEADER */
 #header{
@@ -61,203 +48,67 @@ body.dragging-active{
   z-index:1000;
   box-shadow:0 4px 24px rgba(0,0,0,.35);
 }
-
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-}
-
-.brand-text{
-  color:#f0e3bb;
-  font-family:'Playfair Display',serif;
-  font-size:22px;
-  line-height:1.05;
-}
-
-.brand-text span{
-  display:block;
-  font-size:12px;
-  color:#d7d7d7;
-  font-family:'Lato',sans-serif;
-  margin-top:4px;
-}
-
-.header-logo{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex:1;
-}
-
-.header-logo img{
-  height:46px;
-  width:auto;
-  display:block;
-  filter:drop-shadow(0 2px 6px rgba(201,168,76,.45));
-}
-
-.hud{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-
-.hud-box{
-  min-width:110px;
-  border:1px solid rgba(201,168,76,.28);
-  border-radius:18px;
-  padding:10px 14px;
-  background:rgba(255,255,255,.03);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
-  text-align:center;
-}
-
-.hud-lbl{
-  font-size:11px;
-  color:var(--gold);
-  letter-spacing:6px;
-  text-transform:uppercase;
-  margin-bottom:4px;
-}
-
-.hud-val{
-  font-family:'Playfair Display',serif;
-  font-size:26px;
-  color:#f7f3e6;
-}
-
-#timer-val{
-  color:var(--gold-light);
-}
-
-#timer-val.urgent{
-  color:#ff5f5f;
-  animation:blink .55s infinite;
-}
-
-@keyframes blink{
-  0%,100%{opacity:1}
-  50%{opacity:.4}
-}
+.logo-wrap{display:flex;align-items:center;gap:10px;min-width:0;}
+.brand-text{color:#f0e3bb;font-family:'Playfair Display',serif;font-size:22px;line-height:1.05;}
+.brand-text span{display:block;font-size:12px;color:#d7d7d7;font-family:'Lato',sans-serif;margin-top:4px;}
+.header-logo{display:flex;justify-content:center;align-items:center;flex:1;}
+.header-logo img{height:46px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(201,168,76,.45));}
+.hud{display:flex;gap:12px;align-items:center;}
+.hud-box{min-width:110px;border:1px solid rgba(201,168,76,.28);border-radius:18px;padding:10px 14px;background:rgba(255,255,255,.03);text-align:center;}
+.hud-lbl{font-size:11px;color:var(--gold);letter-spacing:6px;text-transform:uppercase;margin-bottom:4px;}
+.hud-val{font-family:'Playfair Display',serif;font-size:26px;color:#f7f3e6;}
+#timer-val{color:var(--gold-light);}
+#timer-val.urgent{color:#ff5f5f;animation:blink .55s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* MAIN */
-#main{
-  width:min(98vw,1200px);
-  margin:0 auto;
-  padding:10px 10px 22px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-#instructions{
-  color:#f0d894;
-  font-size:15px;
-  line-height:1.6;
-  text-align:center;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(201,168,76,.25);
-  border-radius:16px;
-  padding:12px 16px;
-  box-shadow:0 6px 18px rgba(0,0,0,.2);
-}
+#main{width:min(98vw,1200px);margin:0 auto;padding:10px 10px 22px;display:flex;flex-direction:column;gap:12px;}
+#instructions{color:#f0d894;font-size:15px;line-height:1.6;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.2);}
 
 /* TABLE AREA */
-#table-area{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:visible;
-}
-
+#table-area{width:100%;display:flex;justify-content:center;align-items:center;overflow:visible;}
 #table{
   position:relative;
-  width:800px;
-  height:560px;
+  width:800px;height:560px;
   margin:0 auto;
   background:var(--cloth);
   border-radius:30px;
-  box-shadow:
-    0 0 0 9px #c9a56a,
-    0 0 0 17px #8b6610,
-    0 24px 70px rgba(0,0,0,.65);
+  box-shadow:0 0 0 9px #c9a56a,0 0 0 17px #8b6610,0 24px 70px rgba(0,0,0,.65);
   overflow:hidden;
   touch-action:none;
 }
-
-/* subtle cloth texture */
 #table::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 1px 1px, rgba(0,0,0,.025) 1px, transparent 1px);
-  background-size:8px 8px;
-  opacity:.5;
-  pointer-events:none;
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 1px 1px, rgba(0,0,0,.025) 1px, transparent 1px);
+  background-size:8px 8px;opacity:.5;pointer-events:none;
 }
 
 /* runners */
-.runner-h,.runner-v{
-  position:absolute;
-  background:rgba(42,57,96,.78);
-  border-radius:6px;
-  z-index:1;
-}
-
-.runner-h{
-  width:640px;
-  height:26px;
-  left:80px;
-  top:267px;
-}
-
-.runner-v{
-  width:26px;
-  height:430px;
-  left:387px;
-  top:65px;
-}
+.runner-h,.runner-v{position:absolute;background:rgba(42,57,96,.78);border-radius:6px;z-index:1;}
+.runner-h{width:640px;height:26px;left:80px;top:267px;}
+.runner-v{width:26px;height:430px;left:387px;top:65px;}
 
 /* center zone */
 #center-zone{
-  position:absolute;
-  width:52px;
-  height:52px;
-  left:374px;
-  top:254px;
-  border:2px dashed rgba(90,108,135,.4);
-  border-radius:8px;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:rgba(90,108,135,.4);
-  font-size:12px;
-  font-weight:700;
+  position:absolute;width:52px;height:52px;left:374px;top:254px;
+  border:2px dashed rgba(90,108,135,.4);border-radius:8px;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(90,108,135,.4);font-size:12px;font-weight:700;
 }
 
 /* COVERS */
 .cover{
   position:absolute;
-  width:190px;
-  height:150px;
+  width:240px;height:240px;
   z-index:2;
+  overflow:visible;
 }
+.cover.top   {top:48px;left:280px;}
+.cover.bottom{bottom:48px;left:280px;}
+.cover.left  {top:185px;left:48px;}
+.cover.right {top:185px;right:48px;}
 
-.cover.top{ top:48px; left:305px; }
-.cover.right{ top:185px; right:48px; }
-.cover.bottom{ bottom:48px; left:305px; }
-.cover.left{ top:185px; left:48px; }
-
-.cover-inner{
-  position:relative;
-  width:100%;
-  height:100%;
-}
+.cover-inner{position:relative;width:100%;height:100%;overflow:visible;}
 
 /* GUIDE BLUEPRINTS */
 .guide{
@@ -267,549 +118,110 @@ body.dragging-active{
   pointer-events:none;
   z-index:4;
   border-radius:4px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   transition:background .18s,border-color .18s,box-shadow .18s;
 }
+.guide.circle{border-radius:50%;}
+.guide.snap-active{border-color:rgba(201,168,76,.78);background:rgba(201,168,76,.10);box-shadow:0 0 10px rgba(201,168,76,.18);}
+.guide.filled{border-color:rgba(61,154,80,.55);background:rgba(61,154,80,.10);}
+.guide-lbl{display:none;}
 
-.guide.circle{
-  border-radius:50%;
-}
+/* napkin blueprint */
+.guide[data-type="napkin"]{border:none !important;background:transparent !important;box-shadow:none !important;}
+.guide[data-type="napkin"] .guide-lbl{font-size:9px;color:rgba(90,108,135,.62);letter-spacing:.8px;}
+.guide[data-type="napkin"].snap-active{border:none !important;background:rgba(201,168,76,.10) !important;box-shadow:0 0 10px rgba(201,168,76,.18);}
 
-.guide.snap-active{
-  border-color:rgba(201,168,76,.78);
-  background:rgba(201,168,76,.10);
-  box-shadow:0 0 10px rgba(201,168,76,.18);
-}
-
-.guide.filled{
-  border-color:rgba(61,154,80,.55);
-  background:rgba(61,154,80,.10);
-}
-
-.guide-lbl{
-  display:none;
-}
-
-/* napkin blueprint only */
-.guide[data-type="napkin"]{
-  border:none !important;
-  background:transparent !important;
-  box-shadow:none !important;
-}
-
-.guide[data-type="napkin"] .guide-lbl{
-  font-size:9px;
-  color:rgba(90,108,135,.62);
-  letter-spacing:.8px;
-}
-
-.guide[data-type="napkin"].snap-active{
-  border:none !important;
-  background:rgba(201,168,76,.10) !important;
-  box-shadow:0 0 10px rgba(201,168,76,.18);
-}
+/* cruet guides */
+.cruet-guide{width:22px !important;height:34px !important;border-radius:8px !important;background:rgba(90,108,135,.04);border:1.5px dashed rgba(90,108,135,.38);position:absolute;}
+#guide-salt  {left:6px;top:8px;}
+#guide-pepper{right:6px;top:8px;}
+.cruet-lbl{font-size:10px;color:rgba(90,108,135,.55);font-weight:800;}
 
 /* tray section */
-#tray-section{
-  width:min(100%,980px);
-  margin:0 auto;
-  background:rgba(26,39,68,.95);
-  border:1px solid rgba(201,168,76,.25);
-  border-radius:24px;
-  padding:16px 18px 18px;
-  box-shadow:0 18px 40px rgba(0,0,0,.35);
-}
-
-#tray-title{
-  text-align:center;
-  color:#d9c28b;
-  font-family:'Playfair Display',serif;
-  font-size:18px;
-  letter-spacing:6px;
-  text-transform:uppercase;
-  margin-bottom:14px;
-  padding-bottom:10px;
-  border-bottom:1px solid rgba(201,168,76,.18);
-}
-
-#tray{
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  gap:16px;
-  flex-wrap:wrap;
-  min-height:160px;
-  position:relative;
-  overflow:visible;
-}
+#tray-section{width:min(100%,980px);margin:0 auto;background:rgba(26,39,68,.95);border:1px solid rgba(201,168,76,.25);border-radius:24px;padding:16px 18px 18px;box-shadow:0 18px 40px rgba(0,0,0,.35);}
+#tray-title{text-align:center;color:#d9c28b;font-family:'Playfair Display',serif;font-size:18px;letter-spacing:6px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(201,168,76,.18);}
+#tray{display:flex;align-items:flex-end;justify-content:center;gap:16px;flex-wrap:wrap;min-height:160px;position:relative;overflow:visible;}
 
 /* draggable items */
-.item,
-.nap-card{
-  position:relative;
-  cursor:grab;
-  touch-action:none;
-  user-select:none;
-  -webkit-user-drag:none;
-  transition:transform .12s ease;
-  z-index:5;
-}
+.item,.nap-card{position:relative;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;transition:transform .12s ease;z-index:5;}
+.item:active,.nap-card:active{cursor:grabbing;}
+.dragging{z-index:9999 !important;cursor:grabbing !important;transition:none !important;pointer-events:none;will-change:left,top,transform;}
+.item svg{display:block;width:auto;height:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18));}
 
-.item:active,
-.nap-card:active{
-  cursor:grabbing;
-}
+/* placed items */
+.item.placed{transition:none;}
 
-.dragging{
-  z-index:9999 !important;
-  cursor:grabbing !important;
-  transition:none !important;
-  pointer-events:none;
-  will-change:left,top,transform;
-}
-
-/* icons */
-.item svg{
-  display:block;
-  width:auto;
-  height:auto;
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.18));
-}
-
-/* fold card */
-.nap-card{
-  width:190px;
-  background:#203055;
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.06);
-  padding:14px 14px 16px;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
-}
-
-.nap-preview{
-  width:100%;
-  aspect-ratio:1/1;
-  border-radius:12px;
-  background:#f3efe8;
-  box-shadow:inset 0 0 0 2px rgba(0,0,0,.15);
-  position:relative;
-  margin-bottom:12px;
-}
-
-.nap-preview::before{
-  content:"";
-  position:absolute;
-  inset:16px;
-  border:2px dashed rgba(0,0,0,.08);
-}
-
-.fold-btn{
-  width:100%;
-  border:none;
-  border-radius:999px;
-  padding:12px 14px;
-  font-weight:800;
-  letter-spacing:1px;
-  background:linear-gradient(180deg,#ecd37a,#d7b95b);
-  color:#121212;
-  cursor:pointer;
-}
+/* napkin card */
+.nap-card{width:190px;background:#203055;border-radius:22px;border:1px solid rgba(255,255,255,.06);padding:14px 14px 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);}
+.nap-preview{width:100%;aspect-ratio:1/1;border-radius:12px;background:#f3efe8;box-shadow:inset 0 0 0 2px rgba(0,0,0,.15);position:relative;margin-bottom:12px;}
+.nap-preview::before{content:"";position:absolute;inset:16px;border:2px dashed rgba(0,0,0,.08);}
+.fold-btn{width:100%;border:none;border-radius:999px;padding:12px 14px;font-weight:800;letter-spacing:1px;background:linear-gradient(180deg,#ecd37a,#d7b95b);color:#121212;cursor:pointer;}
 
 #check-btn{
-  margin:8px auto 0;
-  border:none;
-  border-radius:999px;
-  padding:16px 44px;
-  font-size:20px;
-  font-family:'Playfair Display',serif;
-  background:transparent;
-  color:var(--gold);
-  border:3px solid var(--gold);
-  box-shadow:0 0 0 2px rgba(255,255,255,.04) inset, 0 12px 28px rgba(0,0,0,.28);
+  margin:8px auto 0;border:none;border-radius:999px;padding:16px 44px;font-size:20px;
+  font-family:'Playfair Display',serif;background:transparent;color:var(--gold);
+  border:3px solid var(--gold);box-shadow:0 0 0 2px rgba(255,255,255,.04) inset,0 12px 28px rgba(0,0,0,.28);
   cursor:pointer;
 }
-/* =========================
-   START SCREEN + RESULT MODAL
-========================= */
-#start-screen,
-#result-modal{
-  position:fixed;
-  inset:0;
-  z-index:3000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(3,8,18,.88);
-  backdrop-filter:blur(8px);
-  padding:20px;
+
+/* START SCREEN + RESULT MODAL */
+#start-screen,#result-modal{
+  position:fixed;inset:0;z-index:3000;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(3,8,18,.88);backdrop-filter:blur(8px);padding:20px;
 }
+#result-modal{opacity:0;pointer-events:none;transition:opacity .25s ease;}
+#result-modal.show{opacity:1;pointer-events:auto;}
+#start-screen{flex-direction:column;text-align:center;color:#fff;}
+#start-screen h1{font-family:'Playfair Display',serif;font-size:42px;line-height:1.15;color:#f5e6b3;margin:18px 0 10px;}
+#start-screen p{font-size:18px;color:#f2f2f2;margin-bottom:12px;}
+#start-screen ul{max-width:760px;text-align:left;margin:0 auto 22px;padding-left:22px;color:#e6e6e6;line-height:1.8;font-size:17px;}
+.btn-gold{border:none;border-radius:999px;padding:14px 28px;font-size:18px;font-weight:800;background:linear-gradient(180deg,#ecd37a,#d7b95b);color:#111;cursor:pointer;box-shadow:0 12px 28px rgba(0,0,0,.28);}
+.rcard{width:min(92vw,500px);background:linear-gradient(180deg,#15213c,#0c1528);border:1px solid rgba(201,168,76,.25);border-radius:28px;padding:28px 24px;text-align:center;color:#fff;box-shadow:0 25px 70px rgba(0,0,0,.45);}
+.rtitle{font-family:'Playfair Display',serif;font-size:28px;color:#f0d894;margin-bottom:10px;}
+.rscore{font-family:'Playfair Display',serif;font-size:64px;color:#fff;margin-bottom:8px;}
+.rgrade{font-size:18px;color:#f3d67c;margin-bottom:18px;font-weight:700;}
+.rdet{font-size:16px;line-height:1.8;color:#e5e5e5;}
+.rdet span{color:#fff;font-weight:700;}
 
-#result-modal{
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s ease;
+/* napkin fold card helpers */
+.fold-dots{display:flex;justify-content:center;gap:8px;margin-bottom:12px;}
+.fdot{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);transition:.2s;}
+.fdot.active{background:#d7b95b;transform:scale(1.08);}
+.fdot.done{background:#4caf50;}
+.nap-info{text-align:center;color:#d8dbe2;font-size:13px;margin:10px 0 12px;min-height:18px;}
+.do-fold-anim{animation:foldPop .28s ease;}
+@keyframes foldPop{0%{transform:scale(.92) rotate(-2deg);}100%{transform:scale(1) rotate(0);}}
+.fold-btn.ready{background:linear-gradient(180deg,#b6f3b9,#65c86c);}
+
+/* MOBILE */
+@media(max-width:768px){
+  #header{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;padding:8px 12px;}
+  .brand-text{font-size:10px;line-height:1.3;}.brand-text span{font-size:8px;}
+  .header-logo img{height:34px;}
+  .hud{display:flex;gap:8px;}.hud-box{min-width:58px;padding:4px 8px;}
+  .hud-lbl{font-size:9px;letter-spacing:4px;}.hud-val{font-size:18px;}
+  #instructions{font-size:10px;line-height:1.5;padding:8px 10px;}
+  #main{padding:8px 6px 14px;gap:10px;}
+  #table-wrap{width:100%;display:flex;justify-content:center;align-items:flex-start;overflow:visible;}
+  #table-scale{width:800px;height:560px;transform-origin:top center;}
+  #table-area{width:100%;overflow:visible;display:flex;justify-content:center;align-items:center;padding:0;}
+  #check-btn{font-size:14px;padding:10px 28px;margin-top:4px;}
+  #tray-section{width:min(96vw,900px);padding:10px 10px 14px;}
+  #tray-title{font-size:14px;letter-spacing:4px;}
+  #tray{gap:8px;min-height:96px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;justify-content:flex-start;padding-bottom:4px;}
+  .item,.nap-card{flex:0 0 auto;}
+  .item{transform:scale(.86);transform-origin:center bottom;}
+  .nap-card{transform:scale(.84);transform-origin:center bottom;}
 }
-
-#result-modal.show{
-  opacity:1;
-  pointer-events:auto;
-}
-
-#start-screen{
-  flex-direction:column;
-  text-align:center;
-  color:#fff;
-}
-
-#start-screen h1{
-  font-family:'Playfair Display',serif;
-  font-size:42px;
-  line-height:1.15;
-  color:#f5e6b3;
-  margin:18px 0 10px;
-}
-
-#start-screen p{
-  font-size:18px;
-  color:#f2f2f2;
-  margin-bottom:12px;
-}
-
-#start-screen ul{
-  max-width:760px;
-  text-align:left;
-  margin:0 auto 22px;
-  padding-left:22px;
-  color:#e6e6e6;
-  line-height:1.8;
-  font-size:17px;
-}
-
-.btn-gold{
-  border:none;
-  border-radius:999px;
-  padding:14px 28px;
-  font-size:18px;
-  font-weight:800;
-  background:linear-gradient(180deg,#ecd37a,#d7b95b);
-  color:#111;
-  cursor:pointer;
-  box-shadow:0 12px 28px rgba(0,0,0,.28);
-}
-
-.rcard{
-  width:min(92vw,500px);
-  background:linear-gradient(180deg,#15213c,#0c1528);
-  border:1px solid rgba(201,168,76,.25);
-  border-radius:28px;
-  padding:28px 24px;
-  text-align:center;
-  color:#fff;
-  box-shadow:0 25px 70px rgba(0,0,0,.45);
-}
-
-.rtitle{
-  font-family:'Playfair Display',serif;
-  font-size:28px;
-  color:#f0d894;
-  margin-bottom:10px;
-}
-
-.rscore{
-  font-family:'Playfair Display',serif;
-  font-size:64px;
-  color:#fff;
-  margin-bottom:8px;
-}
-
-.rgrade{
-  font-size:18px;
-  color:#f3d67c;
-  margin-bottom:18px;
-  font-weight:700;
-}
-
-.rdet{
-  font-size:16px;
-  line-height:1.8;
-  color:#e5e5e5;
-}
-
-.rdet span{
-  color:#fff;
-  font-weight:700;
-}
-
-/* =========================
-   DINNER PLATE
-========================= */
-.dinner-plate{
-  position:absolute;
-  width:84px;
-  height:84px;
-  left:113px; /* 155 - 42 */
-  top:58px;   /* 100 - 42 */
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 35% 35%, #ffffff 0%, #f8f4ec 45%, #e6ddd1 100%);
-  border:2px solid #d9d0c3;
-  box-shadow:
-    inset 0 0 0 6px #fdfbf7,
-    inset 0 0 0 10px #e7dfd3,
-    0 4px 10px rgba(0,0,0,.08);
-  z-index:2;
-}
-
-/* =========================
-   CRUET GUIDES
-========================= */
-.cruet-guide{
-  width:22px !important;
-  height:34px !important;
-  border-radius:8px !important;
-  background:rgba(90,108,135,.04);
-  border:1.5px dashed rgba(90,108,135,.38);
-  position:absolute;
-}
-
-#guide-salt{
-  left:6px;
-  top:8px;
-}
-
-#guide-pepper{
-  right:6px;
-  top:8px;
-}
-
-.cruet-lbl{
-  font-size:10px;
-  color:rgba(90,108,135,.55);
-  font-weight:800;
-}
-
-/* =========================
-   NAPKIN CARD FIXES
-========================= */
-.fold-dots{
-  display:flex;
-  justify-content:center;
-  gap:8px;
-  margin-bottom:12px;
-}
-
-.fdot{
-  width:16px;
-  height:16px;
-  border-radius:50%;
-  background:rgba(255,255,255,.08);
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);
-  transition:.2s;
-}
-
-.fdot.active{
-  background:#d7b95b;
-  transform:scale(1.08);
-}
-
-.fdot.done{
-  background:#4caf50;
-}
-
-.nap-info{
-  text-align:center;
-  color:#d8dbe2;
-  font-size:13px;
-  margin:10px 0 12px;
-  min-height:18px;
-}
-
-.do-fold-anim{
-  animation:foldPop .28s ease;
-}
-
-@keyframes foldPop{
-  0%{transform:scale(.92) rotate(-2deg);}
-  100%{transform:scale(1) rotate(0);}
-}
-
-.fold-btn.ready{
-  background:linear-gradient(180deg,#b6f3b9,#65c86c);
-}
-/* =========================
-   MOBILE SAFE LAYOUT
-========================= */
-@media (max-width: 768px){
-  #header{
-    display:grid;
-    grid-template-columns: 1fr auto auto;
-    align-items:center;
-    gap:10px;
-    padding:8px 12px;
-  }
-
-  .brand-text{
-    font-size:10px;
-    line-height:1.3;
-  }
-
-  .brand-text span{
-    font-size:8px;
-  }
-
-  .header-logo img{
-    height:34px;
-  }
-
-  .hud{
-    display:flex;
-    gap:8px;
-  }
-
-  .hud-box{
-    min-width:58px;
-    padding:4px 8px;
-  }
-
-  .hud-lbl{
-    font-size:9px;
-    letter-spacing:4px;
-  }
-
-  .hud-val{
-    font-size:18px;
-  }
-
-  #instructions{
-    font-size:10px;
-    line-height:1.5;
-    padding:8px 10px;
-  }
-
-  #main{
-    padding:8px 6px 14px;
-    gap:10px;
-  }
-
-  /* Keep geometry stable — scale whole board */
-  #table-wrap{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  overflow:visible;
-}
-
-#table-scale{
-  width:800px;
-  height:560px;
-  transform-origin:top center;
-}
-
-  #table-area{
-    width:100%;
-    overflow:visible;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:0;
-  }
-
-  #check-btn{
-    font-size:14px;
-    padding:10px 28px;
-    margin-top:4px;
-  }
-
-  #tray-section{
-    width:min(96vw,900px);
-    padding:10px 10px 14px;
-  }
-
-  #tray-title{
-    font-size:14px;
-    letter-spacing:4px;
-  }
-
-  #tray{
-    gap:8px;
-    min-height:96px;
-    overflow-x:auto;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-    flex-wrap:nowrap;
-    justify-content:flex-start;
-    padding-bottom:4px;
-  }
-
-  .item,
-  .nap-card{
-    flex:0 0 auto;
-  }
-
-  .item{
-    transform:scale(.86);
-    transform-origin:center bottom;
-  }
-
-  .nap-card{
-    transform:scale(.84);
-    transform-origin:center bottom;
-  }
-}
-
-@media (max-width: 480px){
-  .brand-text{
-    font-size:9px;
-  }
-
-  .brand-text span{
-    font-size:7px;
-  }
-
-  .header-logo img{
-    height:30px;
-  }
-
-  .hud-box{
-    min-width:52px;
-    padding:4px 7px;
-  }
-
-  .hud-lbl{
-    font-size:8px;
-    letter-spacing:3px;
-  }
-
-  .hud-val{
-    font-size:16px;
-  }
-
-  #instructions{
-    font-size:9px;
-    line-height:1.45;
-    padding:7px 8px;
-  }
-
-  #table-scale{
-    transform:scale(.56);
-    margin-bottom:-240px;
-  }
-
-  #check-btn{
-    font-size:13px;
-    padding:9px 24px;
-  }
-
-  .item{
-    transform:scale(.8);
-  }
-
-  .nap-card{
-    transform:scale(.78);
-  }
+@media(max-width:480px){
+  .brand-text{font-size:9px;}.brand-text span{font-size:7px;}
+  .header-logo img{height:30px;}
+  .hud-box{min-width:52px;padding:4px 7px;}.hud-lbl{font-size:8px;letter-spacing:3px;}.hud-val{font-size:16px;}
+  #instructions{font-size:9px;line-height:1.45;padding:7px 8px;}
+  #table-scale{transform:scale(.56);margin-bottom:-240px;}
+  #check-btn{font-size:13px;padding:9px 24px;}
+  .item{transform:scale(.8);}.nap-card{transform:scale(.78);}
 }
 </style>
 </head>
@@ -844,28 +256,16 @@ body.dragging-active{
 <!-- HEADER -->
 <div id="header">
   <div class="logo-wrap">
-    <div class="brand-text">
-      LR Hospitality
-      <span>Training Institute</span>
-    </div>
+    <div class="brand-text">LR Hospitality<span>Training Institute</span></div>
   </div>
-
   <div class="header-logo">
     <img src="logo.png" alt="LR Logo" onerror="this.style.display='none'">
   </div>
-
   <div class="hud">
-    <div class="hud-box">
-      <div class="hud-lbl">TIME</div>
-      <div class="hud-val" id="timer-val">90</div>
-    </div>
-    <div class="hud-box">
-      <div class="hud-lbl">SCORE</div>
-      <div class="hud-val" id="score-val">0%</div>
-    </div>
+    <div class="hud-box"><div class="hud-lbl">TIME</div><div class="hud-val" id="timer-val">90</div></div>
+    <div class="hud-box"><div class="hud-lbl">SCORE</div><div class="hud-val" id="score-val">0%</div></div>
   </div>
 </div>
-
 
 <!-- MAIN -->
 <div id="main">
@@ -876,20 +276,20 @@ body.dragging-active{
   </div>
 
   <div id="table-area">
-  <div id="table-wrap">
-    <div id="table-scale">
-      <div id="table">
-      <div class="runner-h"></div>
-      <div class="runner-v"></div>
-      <div id="center-zone">
-        <div class="guide cruet-guide" id="guide-salt"   data-type="salt"  ><div class="cruet-lbl">S</div></div>
-        <div class="guide cruet-guide" id="guide-pepper" data-type="pepper"><div class="cruet-lbl">P</div></div>
-      </div>
-      <!-- JS inserts covers here -->
+    <div id="table-wrap">
+      <div id="table-scale">
+        <div id="table">
+          <div class="runner-h"></div>
+          <div class="runner-v"></div>
+          <div id="center-zone">
+            <div class="guide cruet-guide" id="guide-salt"    data-type="salt"  ><div class="cruet-lbl">S</div></div>
+            <div class="guide cruet-guide" id="guide-pepper"  data-type="pepper"><div class="cruet-lbl">P</div></div>
           </div>
+          <!-- covers inserted by JS -->
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
   <button id="check-btn" onclick="checkTable()">Check Table ✓</button>
 
@@ -902,9 +302,7 @@ body.dragging-active{
 <script>
 'use strict';
 
-// ══════════════════════════════════════════════
-// AUDIO
-// ══════════════════════════════════════════════
+/* ─── AUDIO ─── */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let actx;
 function initAudio(){ try{ if(!actx) actx = new AudioCtx(); }catch(e){} }
@@ -920,51 +318,33 @@ function tone(f,d,t,v){
     o.start();o.stop(actx.currentTime+d);
   }catch(e){}
 }
-function playSnap(){tone(880,.09,'triangle');setTimeout(()=>tone(1100,.07,'triangle'),58);}
-function playFold(){tone(600,.07,'triangle');}
+function playSnap()  {tone(880,.09,'triangle');setTimeout(()=>tone(1100,.07,'triangle'),58);}
+function playFold()  {tone(600,.07,'triangle');}
 function playBishop(){[660,790,940].forEach((f,i)=>setTimeout(()=>tone(f,.08,'triangle'),i*60));}
 function playReject(){tone(200,.15,'sawtooth',.13);}
-function playCheck(){[440,550,660,780].forEach((f,i)=>setTimeout(()=>tone(f,.1,'sine'),i*70));}
-function playDrop(){tone(300,.06,'sine',.1);}
+function playCheck() {[440,550,660,780].forEach((f,i)=>setTimeout(()=>tone(f,.1,'sine'),i*70));}
+function playDrop()  {tone(300,.06,'sine',.1);}
 
-// ══════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════
+/* ─── STATE ─── */
 let timerInterval=null, timeLeft=90, gameActive=false;
 let placedItems={}, items={}, guides={}, idc=0, _gid=0;
 const SEATS=['bottom','top','left','right'];
 
-// ══════════════════════════════════════════════
-// TABLE GEOMETRY
-//
-// cover-inner = 310 × 200 px
-// Plate 84 px diam, centre PX=155, PY=100
-//
-// Western F&B standard place setting (bottom seat, 0° = guest faces table from bottom):
-//
-//  [Bread ●]                         [Glass ◇]
-//  [Fork  |]  [──── Dinner Plate ────] [Knife|] [Spoon|]
-//              [  Napkin folded on  ]
-//              [     plate  ●       ]
-//
-// Measurements from plate centre:
-//   Plate radius = 42 px
-//   Fork  : 10 px gap from plate left  → centre dx = -(42+10+11) = -63
-//   Knife : 10 px gap from plate right → centre dx = +(42+10+11) = +63
-//   Spoon : 8 px right of knife        → centre dx = +(63+22+8)  = +93
-//   Bread : upper-left, above fork     → dx=-110, dy=-22
-//   Glass : upper-right, above knife   → dx=+70,  dy=-66
-//   Napkin: folded ON plate            → dx=0,    dy=0
-//
-// Boundary check (310×200, PX=155, PY=100):
-//   Fork   L=155-63-11=81   R=103  T=67  B=133  ✓
-//   Knife  L=155+63-11=207  R=229  T=67  B=133  ✓
-//   Spoon  L=155+93-11=237  R=259  T=67  B=133  ✓
-//   Bread  L=155-110-27=18  R=72   T=51  B=105  ✓
-//   Glass  L=155+70-21=204  R=246  T=8   B=60   ✓
-//   Napkin L=155-35=120     R=190  T=65  B=135  ✓ (on plate)
-// ══════════════════════════════════════════════
-const PX=155, PY=122;
+/* ─────────────────────────────────────────────────────────────────
+   TABLE GEOMETRY
+   Runner-H centre Y = 267 + 13 = 280
+   Runner-V centre X = 387 + 13 = 400
+   Table centre = (400, 280)
+
+   Cover left = 280px → plate X within cover = 120px → abs X = 280+120 = 400 ✓
+   Top/bottom are mirror-symmetric on the same vertical axis ✓
+─────────────────────────────────────────────────────────────────── */
+
+/* Plate centre within cover-inner (px) */
+const SEAT_PX = { bottom:120, top:120, left:120, right:120 };
+const SEAT_PY = { bottom:82,  top:140, left:100, right:100 };
+/* Visual rotation applied to placed items */
+const SEAT_ROT = { bottom:0, top:180, left:90, right:-90 };
 
 const GDEFS=[
   {t:'napkin', dx:   0, dy:  18, w:70, h:70, s:'rect',   l:'Napkin'},
@@ -975,21 +355,13 @@ const GDEFS=[
   {t:'bread',  dx:-112, dy:  18, w:54, h:54, s:'circle', l:'B&B'   },
 ];
 
-// Rendered item sizes in tray and on table
 const SZ={
-  fork:  {w:24,h:78},
-  knife: {w:24,h:78},
-  spoon: {w:24,h:78},
-  bread: {w:54,h:54},
-  glass: {w:44,h:64},
-  napkin:{w:70,h:70},
-  salt:  {w:28,h:44},
-  pepper:{w:28,h:44}
+  fork:  {w:24,h:78},knife:{w:24,h:78},spoon:{w:24,h:78},
+  bread: {w:54,h:54},glass:{w:44,h:56},napkin:{w:70,h:70},
+  salt:  {w:28,h:44},pepper:{w:28,h:44}
 };
 
-// ══════════════════════════════════════════════
-// SVG GENERATORS
-// ══════════════════════════════════════════════
+/* ─── SVG GENERATORS ─── */
 function svgFork(){
   const n=_gid++;
   return `<svg viewBox="0 0 30 92" xmlns="http://www.w3.org/2000/svg">
@@ -1014,15 +386,7 @@ function svgKnife(){
 </linearGradient></defs>
 <rect x="12" y="40" width="6" height="48" rx="3" fill="url(#k${n})"/>
 <rect x="10.5" y="35" width="9" height="7" rx="2" fill="url(#k${n})"/>
-<path d="M15 4
-         C19 5, 22 10, 22 17
-         L22 33
-         C22 36, 20 38, 17 38
-         L13 38
-         C11 38, 10 37, 10 35
-         L10 9
-         C10 6, 12 4.5, 15 4Z"
-      fill="url(#k${n})"/>
+<path d="M15 4 C19 5,22 10,22 17 L22 33 C22 36,20 38,17 38 L13 38 C11 38,10 37,10 35 L10 9 C10 6,12 4.5,15 4Z" fill="url(#k${n})"/>
 <path d="M18.5 8 L18.5 32" stroke="rgba(255,255,255,.26)" stroke-width="1.2" stroke-linecap="round"/>
 <rect x="14" y="42" width="1.5" height="42" rx="1" fill="rgba(255,255,255,.26)"/>
 </svg>`;}
@@ -1057,22 +421,8 @@ function svgGlass(){
 <stop offset="68%"  stop-color="rgba(165,208,248,.22)"/>
 <stop offset="100%" stop-color="rgba(145,198,244,.42)"/>
 </linearGradient></defs>
-<path d="M15 8
-         C15 4, 35 4, 35 8
-         C35 18, 31 28, 27 34
-         L27 53
-         L31 53
-         C33 53, 35 54, 35 56
-         C35 58, 33 59, 31 59
-         L19 59
-         C17 59, 15 58, 15 56
-         C15 54, 17 53, 19 53
-         L23 53
-         L23 34
-         C19 28, 15 18, 15 8Z"
-      fill="url(#g${n})"
-      stroke="rgba(150,204,248,.82)"
-      stroke-width="1.4"/>
+<path d="M15 8 C15 4,35 4,35 8 C35 18,31 28,27 34 L27 53 L31 53 C33 53,35 54,35 56 C35 58,33 59,31 59 L19 59 C17 59,15 58,15 56 C15 54,17 53,19 53 L23 53 L23 34 C19 28,15 18,15 8Z"
+  fill="url(#g${n})" stroke="rgba(150,204,248,.82)" stroke-width="1.4"/>
 <ellipse cx="25" cy="8" rx="10" ry="2.8" fill="rgba(218,241,255,.26)" stroke="rgba(150,204,248,.72)" stroke-width="1"/>
 <ellipse cx="25" cy="63" rx="9.5" ry="2.8" fill="rgba(150,204,248,.34)" stroke="rgba(150,204,248,.78)" stroke-width="1.1"/>
 <path d="M18 11 Q16 18 17 28" stroke="rgba(255,255,255,.52)" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -1081,26 +431,22 @@ function svgGlass(){
 function svgNapkin(fold){
   fold=fold||0;
   const F=[
-// 0 flat
 `<svg viewBox="0 0 82 82" xmlns="http://www.w3.org/2000/svg">
 <rect x="4" y="4" width="74" height="74" rx="3.5" fill="#f0ece3" stroke="#d0c8be" stroke-width="1.8"/>
 <rect x="13" y="13" width="56" height="56" rx="2" fill="none" stroke="#e0d8ce" stroke-width=".8" stroke-dasharray="4,4"/>
 <line x1="41" y1="4" x2="41" y2="78" stroke="#e0d8ce" stroke-width=".6" stroke-dasharray="3,5"/>
 <line x1="4" y1="41" x2="78" y2="41" stroke="#e0d8ce" stroke-width=".6" stroke-dasharray="3,5"/>
 </svg>`,
-// 1 triangle
 `<svg viewBox="0 0 82 82" xmlns="http://www.w3.org/2000/svg">
 <polygon points="5,77 77,77 41,12" fill="#f0ece3" stroke="#d0c8be" stroke-width="1.8"/>
 <polygon points="23,77 59,77 41,42" fill="#e4ddd4" stroke="#c8c0b6" stroke-width=".9"/>
 <line x1="41" y1="12" x2="41" y2="77" stroke="#d4ccc2" stroke-width=".7" stroke-dasharray="3,4"/>
 </svg>`,
-// 2 rectangle
 `<svg viewBox="0 0 82 82" xmlns="http://www.w3.org/2000/svg">
 <rect x="5" y="29" width="72" height="30" rx="2.5" fill="#f0ece3" stroke="#d0c8be" stroke-width="1.8"/>
 <rect x="5" y="29" width="72" height="15" rx="2.5" fill="#e4ddd4" stroke="#c8c0b6" stroke-width=".9"/>
 <line x1="5" y1="44" x2="77" y2="44" stroke="#c8c0b6" stroke-width=".9" stroke-dasharray="4,3"/>
 </svg>`,
-// 3 bishop hat
 `<svg viewBox="0 0 82 82" xmlns="http://www.w3.org/2000/svg">
 <path d="M41,6 L70,50 L62,74 L41,63 L20,74 L12,50 Z" fill="#f0ece3" stroke="#d0c8be" stroke-width="1.8"/>
 <path d="M41,6 L60,36 L41,46 L22,36 Z" fill="#e4ddd4" stroke="#c8c0b6" stroke-width=".9"/>
@@ -1118,7 +464,7 @@ function svgSalt(){
 <stop offset="0%" stop-color="#d0d0d0"/><stop offset="50%" stop-color="#f6f6f6"/><stop offset="100%" stop-color="#c0c0c0"/>
 </linearGradient></defs>
 <rect x="8" y="14" width="22" height="34" rx="11" fill="url(#sl${n})" stroke="#b4b4b4" stroke-width="1.2"/>
-<rect x="11" y="7"  width="16" height="11" rx="5.5" fill="#c4c4c4" stroke="#a8a8a8" stroke-width="1"/>
+<rect x="11" y="7" width="16" height="11" rx="5.5" fill="#c4c4c4" stroke="#a8a8a8" stroke-width="1"/>
 <circle cx="16" cy="12" r="1.8" fill="#787878"/>
 <circle cx="19" cy="12" r="1.8" fill="#787878"/>
 <circle cx="22" cy="12" r="1.8" fill="#787878"/>
@@ -1132,7 +478,7 @@ function svgPepper(){
 <stop offset="0%" stop-color="#282828"/><stop offset="50%" stop-color="#4c4c4c"/><stop offset="100%" stop-color="#1c1c1c"/>
 </linearGradient></defs>
 <rect x="8" y="14" width="22" height="34" rx="11" fill="url(#pp${n})" stroke="#141414" stroke-width="1.2"/>
-<rect x="11" y="7"  width="16" height="11" rx="5.5" fill="#383838" stroke="#242424" stroke-width="1"/>
+<rect x="11" y="7" width="16" height="11" rx="5.5" fill="#383838" stroke="#242424" stroke-width="1"/>
 <circle cx="16" cy="12" r="1.8" fill="#141414"/>
 <circle cx="19" cy="12" r="1.8" fill="#141414"/>
 <circle cx="22" cy="12" r="1.8" fill="#141414"/>
@@ -1141,55 +487,89 @@ function svgPepper(){
 
 const SVG_FN={fork:svgFork,knife:svgKnife,spoon:svgSpoon,bread:svgBread,glass:svgGlass,salt:svgSalt,pepper:svgPepper};
 
-// ══════════════════════════════════════════════
-// BUILD COVERS
-// ══════════════════════════════════════════════
+/* ─── BUILD COVERS ─── */
 function buildCovers(){
   const table=document.getElementById('table');
   SEATS.forEach(seat=>{
     const cover=document.createElement('div');
-    cover.className=`cover ${seat}`;cover.id=`cover-${seat}`;
+    cover.className=`cover ${seat}`;
+    cover.id=`cover-${seat}`;
     const inner=document.createElement('div');
-    inner.className='cover-inner';cover.appendChild(inner);
+    inner.className='cover-inner';
+    cover.appendChild(inner);
 
-    // Blueprint guides
+    const px = SEAT_PX[seat];
+    const py = SEAT_PY[seat];
+
     GDEFS.forEach(gd=>{
       const gid=`guide-${seat}-${gd.t}`;
       const el=document.createElement('div');
-      el.className=`guide${gd.s==='circle'?' circle':''}`;
-      el.id=gid;el.dataset.type=gd.t;el.dataset.seat=seat;
-      const L=PX+gd.dx-gd.w/2, T=PY+gd.dy-gd.h/2;
-      el.style.cssText=`width:${gd.w}px;height:${gd.h}px;left:${L}px;top:${T}px;`;
+
+      let rdx, rdy, rw, rh;
+      const isRect = (gd.s !== 'circle');
+      switch(seat){
+        case 'top':
+          rdx = -gd.dx; rdy = -gd.dy;
+          rw = gd.w;    rh  = gd.h;
+          break;
+        case 'left':
+          rdx = -gd.dy; rdy = gd.dx;
+          rw  = isRect ? gd.h : gd.w;
+          rh  = isRect ? gd.w : gd.h;
+          break;
+        case 'right':
+          rdx = gd.dy;  rdy = -gd.dx;
+          rw  = isRect ? gd.h : gd.w;
+          rh  = isRect ? gd.w : gd.h;
+          break;
+        default: // bottom
+          rdx = gd.dx;  rdy = gd.dy;
+          rw = gd.w;    rh  = gd.h;
+      }
+
+      const L = px + rdx - rw/2;
+      const T = py + rdy - rh/2;
+
+      el.className = `guide${gd.s==='circle' ? ' circle' : ''}`;
+      el.id        = gid;
+      el.dataset.type = gd.t;
+      el.dataset.seat = seat;
+      el.style.cssText = `width:${rw}px;height:${rh}px;left:${L}px;top:${T}px;`;
+
       const lbl=document.createElement('div');
-      lbl.className='guide-lbl';lbl.textContent=gd.l;
-      el.appendChild(lbl);inner.appendChild(el);
-      guides[gid]={type:gd.t,seat,el};
+      lbl.className='guide-lbl';
+      lbl.textContent=gd.l;
+      el.appendChild(lbl);
+
+      inner.appendChild(el);
+      guides[gid]={type:gd.t, seat, el};
     });
+
     table.appendChild(cover);
   });
-  // Register cruet guides (already in HTML)
-  guides['guide-salt']  ={type:'salt',  seat:'center',el:document.getElementById('guide-salt')};
-  guides['guide-pepper']={type:'pepper',seat:'center',el:document.getElementById('guide-pepper')};
+
+  // Register cruet guides (in HTML)
+  guides['guide-salt']  ={type:'salt',   seat:'center', el:document.getElementById('guide-salt')};
+  guides['guide-pepper']={type:'pepper', seat:'center', el:document.getElementById('guide-pepper')};
 }
 
-// ══════════════════════════════════════════════
-// CREATE ITEM
-// ══════════════════════════════════════════════
+/* ─── CREATE ITEM ─── */
 function createItem(type){
   const id=`item-${idc++}`;
   const sz=SZ[type];
   const el=document.createElement('div');
-  el.className='item';el.id=id;el.dataset.type=type;el.dataset.fold=0;
-  el.style.width=sz.w+'px';
+  el.className='item';
+  el.id=id;
+  el.dataset.type=type;
+  el.dataset.fold=0;
+  el.style.width =sz.w+'px';
   el.style.height=sz.h+'px';
-  el.innerHTML=type==='napkin'?svgNapkin(0):SVG_FN[type]();
+  el.innerHTML=type==='napkin' ? svgNapkin(0) : SVG_FN[type]();
   items[id]={type,el,fold:0,placed:false};
   return{id,el};
 }
 
-// ══════════════════════════════════════════════
-// POPULATE TRAY
-// ══════════════════════════════════════════════
+/* ─── POPULATE TRAY ─── */
 function populateTray(){
   const tray=document.getElementById('tray');
   tray.innerHTML='';
@@ -1201,45 +581,42 @@ function populateTray(){
     const{id,el}=createItem(type);
     if(type==='napkin'){
       tray.appendChild(buildNapkinCard(id,el));
-    } else {
+    }else{
       tray.appendChild(el);
     }
     setupDrag(id);
   });
 }
 
-// ══════════════════════════════════════════════
-// NAPKIN CARD UI
-// ══════════════════════════════════════════════
+/* ─── NAPKIN CARD UI ─── */
 const FOLD_NAMES=['Flat','▲ Triangle','▬ Rectangle','✓ Bishop Hat'];
 const BTN_LBLS  =['FOLD ×1','FOLD ×2','FOLD ×3','✓ Drag to plate!'];
 
 function buildNapkinCard(id,napEl){
   const card=document.createElement('div');
-  card.className='nap-card';card.id=`card-${id}`;
-
-  // Progress dots
+  card.className='nap-card';
+  card.id=`card-${id}`;
   const dots=document.createElement('div');
-  dots.className='fold-dots';dots.id=`dots-${id}`;
+  dots.className='fold-dots';
+  dots.id=`dots-${id}`;
   for(let i=0;i<3;i++){
     const d=document.createElement('div');
-    d.className='fdot';d.id=`dot-${id}-${i}`;
+    d.className='fdot';
+    d.id=`dot-${id}-${i}`;
     dots.appendChild(d);
   }
   setDots(id,0);
-
-  // Stage label
   const info=document.createElement('div');
-  info.className='nap-info';info.id=`info-${id}`;
+  info.className='nap-info';
+  info.id=`info-${id}`;
   info.textContent='Flat — tap FOLD to begin';
-
-  // FOLD button
   const btn=document.createElement('button');
-  btn.className='fold-btn';btn.id=`fbtn-${id}`;btn.textContent='FOLD ×1';
+  btn.className='fold-btn';
+  btn.id=`fbtn-${id}`;
+  btn.textContent='FOLD ×1';
   const doFold=e=>{e.stopPropagation();e.preventDefault();napkinFold(id);};
   btn.addEventListener('click',doFold);
   btn.addEventListener('touchend',doFold,{passive:false});
-
   card.appendChild(dots);
   card.appendChild(napEl);
   card.appendChild(info);
@@ -1277,173 +654,201 @@ function napkinFold(id){
   }
 }
 
-/* =========================================
-   DRAG SYSTEM — CLEAN MOBILE SAFE VERSION
-========================================= */
+/* ─── DRAG SYSTEM ─── */
 let drag=null, dragMoved=false;
 
 function setupDrag(id){
   const el=document.getElementById(id);
-  if(!el) return;
-
+  if(!el)return;
   if(window.PointerEvent){
-    el.addEventListener('pointerdown', e=>startDrag(e,id), {passive:false});
+    el.addEventListener('pointerdown',e=>startDrag(e,id),{passive:false});
   }else{
     el.addEventListener('mousedown', e=>startDrag(e,id));
-    el.addEventListener('touchstart', e=>startDrag(e,id), {passive:false});
+    el.addEventListener('touchstart',e=>startDrag(e,id),{passive:false});
   }
 }
 
 function getP(e){
-  if(e.touches && e.touches.length) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
-  if(e.changedTouches && e.changedTouches.length) return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
-  return {x:e.clientX,y:e.clientY};
+  if(e.touches&&e.touches.length)         return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.changedTouches&&e.changedTouches.length) return{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+  return{x:e.clientX,y:e.clientY};
 }
 
 function startDrag(e,id){
-  if(!gameActive) return;
+  if(!gameActive)return;
   const item=items[id];
-  if(item && item.placed) return;
-  if(e.target.closest('.fold-btn')) return;
-
+  if(item&&item.placed)return;
+  if(e.target.closest('.fold-btn'))return;
   initAudio();
   e.preventDefault();
   dragMoved=false;
-
   const el=document.getElementById(id);
-  if(!el) return;
-
+  if(!el)return;
   const p=getP(e);
   const r=el.getBoundingClientRect();
-
   document.body.classList.add('dragging-active');
-
-  drag={
-    id,
-    el,
-    sx:p.x,
-    sy:p.y,
-    ox:p.x-r.left,
-    oy:p.y-r.top,
-    pointerId:e.pointerId ?? null,
-    originParent:el.parentElement,
-    originNext:el.nextSibling,
-    placed:!!(item && item.placed)
-  };
-
+  drag={id,el,sx:p.x,sy:p.y,ox:p.x-r.left,oy:p.y-r.top,
+        pointerId:e.pointerId??null,originParent:el.parentElement,originNext:el.nextSibling};
   el.classList.add('dragging');
-
-  const currentRect=el.getBoundingClientRect();
   el.style.position='fixed';
-  el.style.left=currentRect.left+'px';
-  el.style.top=currentRect.top+'px';
+  el.style.left=r.left+'px';
+  el.style.top =r.top+'px';
   el.style.margin='0';
   el.style.zIndex='9999';
-
+  el.style.transform='';
   document.body.appendChild(el);
-
   moveDrag(e);
-
-  if(window.PointerEvent && e.pointerId!=null){
-    try{ el.setPointerCapture(e.pointerId); }catch(err){}
-    window.addEventListener('pointermove', moveDrag, {passive:false});
-    window.addEventListener('pointerup', endDrag, {passive:false});
-    window.addEventListener('pointercancel', endDrag, {passive:false});
+  if(window.PointerEvent&&e.pointerId!=null){
+    try{el.setPointerCapture(e.pointerId);}catch(err){}
+    window.addEventListener('pointermove', moveDrag,{passive:false});
+    window.addEventListener('pointerup',   endDrag, {passive:false});
+    window.addEventListener('pointercancel',endDrag,{passive:false});
   }else{
-    window.addEventListener('mousemove', moveDrag, {passive:false});
-    window.addEventListener('mouseup', endDrag, {passive:false});
-    window.addEventListener('touchmove', moveDrag, {passive:false});
-    window.addEventListener('touchend', endDrag, {passive:false});
-    window.addEventListener('touchcancel', endDrag, {passive:false});
+    window.addEventListener('mousemove', moveDrag,{passive:false});
+    window.addEventListener('mouseup',   endDrag, {passive:false});
+    window.addEventListener('touchmove', moveDrag,{passive:false});
+    window.addEventListener('touchend',  endDrag, {passive:false});
+    window.addEventListener('touchcancel',endDrag,{passive:false});
   }
 }
 
 function moveDrag(e){
-  if(!drag) return;
+  if(!drag)return;
   e.preventDefault();
-
   const p=getP(e);
-  const dx=Math.abs(p.x-drag.sx);
-  const dy=Math.abs(p.y-drag.sy);
-  if(dx>4 || dy>4) dragMoved=true;
-
-  const x=p.x-drag.ox;
-  const y=p.y-drag.oy;
-
-  drag.el.style.left=x+'px';
-  drag.el.style.top=y+'px';
-
-  drag.x=p.x;
-  drag.y=p.y;
-
+  if(Math.abs(p.x-drag.sx)>4||Math.abs(p.y-drag.sy)>4)dragMoved=true;
+  drag.el.style.left=(p.x-drag.ox)+'px';
+  drag.el.style.top =(p.y-drag.oy)+'px';
+  drag.x=p.x; drag.y=p.y;
   updateGuideHighlight(drag.id,p.x,p.y);
 }
 
 function endDrag(e){
-  if(!drag) return;
+  if(!drag)return;
   e.preventDefault();
-
   if(window.PointerEvent){
     window.removeEventListener('pointermove', moveDrag);
-    window.removeEventListener('pointerup', endDrag);
-    window.removeEventListener('pointercancel', endDrag);
+    window.removeEventListener('pointerup',   endDrag);
+    window.removeEventListener('pointercancel',endDrag);
   }else{
     window.removeEventListener('mousemove', moveDrag);
-    window.removeEventListener('mouseup', endDrag);
+    window.removeEventListener('mouseup',   endDrag);
     window.removeEventListener('touchmove', moveDrag);
-    window.removeEventListener('touchend', endDrag);
-    window.removeEventListener('touchcancel', endDrag);
+    window.removeEventListener('touchend',  endDrag);
+    window.removeEventListener('touchcancel',endDrag);
   }
-
   const id=drag.id;
-  const p=drag.x!=null ? {x:drag.x,y:drag.y} : getP(e);
-
+  const p=drag.x!=null?{x:drag.x,y:drag.y}:getP(e);
   clearHL();
-
-  if(!trySnap(id,p.x,p.y)){
-    backToTray(id);
-  }
-
+  if(!trySnap(id,p.x,p.y)) backToTray(id);
   drag.el.classList.remove('dragging');
   document.body.classList.remove('dragging-active');
-
-  if(window.PointerEvent && drag.pointerId!=null){
-    try{ drag.el.releasePointerCapture(drag.pointerId); }catch(err){}
+  if(window.PointerEvent&&drag.pointerId!=null){
+    try{drag.el.releasePointerCapture(drag.pointerId);}catch(err){}
   }
-
   drag=null;
 }
 
-/* =========================
-   GUIDE HIGHLIGHT
-========================= */
+/* ─── GUIDE HIGHLIGHT ─── */
 function updateGuideHighlight(id,x,y){
   clearHL();
-
   const item=items[id];
-  if(!item) return;
-
+  if(!item)return;
   Object.entries(guides).forEach(([gid,g])=>{
-    if(placedItems[gid]) return;
-    if(item.type!==g.type) return;
-    if(item.type==='napkin' && item.fold<3) return;
-
+    if(placedItems[gid])return;
+    if(item.type!==g.type)return;
+    if(item.type==='napkin'&&item.fold<3)return;
     const r=g.el.getBoundingClientRect();
-    const cx=r.left+r.width/2;
-    const cy=r.top+r.height/2;
-    const d=Math.hypot(x-cx,y-cy);
-
-    if(d<58) g.el.classList.add('snap-active');
+    const cx=r.left+r.width/2, cy=r.top+r.height/2;
+    if(Math.hypot(x-cx,y-cy)<58) g.el.classList.add('snap-active');
   });
 }
+function clearHL(){Object.values(guides).forEach(g=>g.el.classList.remove('snap-active'));}
 
+/* ─── SNAP ─── */
+function trySnap(id,x,y){
+  const item=items[id];
+  if(!item)return false;
+  let best=null, bestD=9999;
+  Object.entries(guides).forEach(([gid,g])=>{
+    if(placedItems[gid])return;
+    if(item.type!==g.type)return;
+    if(item.type==='napkin'&&item.fold<3)return;
+    const r=g.el.getBoundingClientRect();
+    const cx=r.left+r.width/2, cy=r.top+r.height/2;
+    const d=Math.hypot(x-cx,y-cy);
+    if(d<60&&d<bestD){best={gid,g};bestD=d;}
+  });
+  if(best){snapItem(id,best.gid,best.g);return true;}
+  return false;
+}
 
-/* =========================
-   BACK TO TRAY
-========================= */
-// ══════════════════════════════════════════════
-// SCORE
-// ══════════════════════════════════════════════
+function snapItem(id,gid,g){
+  const el=document.getElementById(id);
+  const item=items[id];
+  const sz=SZ[item.type];
+
+  el.classList.remove('dragging');
+  el.classList.add('placed');
+
+  const rect=g.el.getBoundingClientRect();
+  const parentRect=g.el.parentNode.getBoundingClientRect();
+  const cx=rect.left+rect.width/2;
+  const cy=rect.top +rect.height/2;
+
+  el.style.position='absolute';
+  el.style.left=(cx - parentRect.left - sz.w/2)+'px';
+  el.style.top =(cy - parentRect.top  - sz.h/2)+'px';
+  el.style.margin='0';
+  el.style.zIndex='20';
+
+  const rot = SEAT_ROT[g.seat] || 0;
+  el.style.transform = rot ? `rotate(${rot}deg)` : '';
+
+  g.el.parentNode.appendChild(el);
+
+  if(item.type==='napkin'){
+    const card=document.getElementById(`card-${id}`);
+    if(card)card.remove();
+  }
+
+  placedItems[gid]=id;
+  item.placed=true;
+  g.el.classList.add('filled');
+  playSnap();
+  updateScore();
+}
+
+/* ─── BACK TO TRAY ─── */
+function backToTray(id){
+  const el=document.getElementById(id);
+  const item=items[id];
+  if(!el||!item)return;
+  el.classList.remove('dragging','placed','shaking');
+  el.style.position='relative';
+  el.style.left='';
+  el.style.top='';
+  el.style.zIndex='';
+  el.style.transform='';
+  el.style.margin='';
+  const tray=document.getElementById('tray');
+  if(item.type==='napkin'){
+    let card=document.getElementById(`card-${id}`);
+    if(!card){
+      card=buildNapkinCard(id,el);
+      tray.appendChild(card);
+      setupDrag(id);
+    }else{
+      card.appendChild(el);
+      tray.appendChild(card);
+    }
+  }else{
+    tray.appendChild(el);
+  }
+  playDrop();
+}
+
+/* ─── SCORE ─── */
 function updateScore(){document.getElementById('score-val').textContent=calcScore().pct+'%';}
 function calcScore(){
   const tot=Object.keys(guides).length;
@@ -1456,9 +861,7 @@ function calcScore(){
   return{pct:Math.round((ok/tot)*100),ok,tot,nok};
 }
 
-// ══════════════════════════════════════════════
-// CHECK TABLE
-// ══════════════════════════════════════════════
+/* ─── CHECK TABLE ─── */
 function checkTable(){
   if(!gameActive)return;
   gameActive=false;clearInterval(timerInterval);playCheck();
@@ -1478,9 +881,7 @@ function checkTable(){
   document.getElementById('result-modal').classList.add('show');
 }
 
-// ══════════════════════════════════════════════
-// START / RESET
-// ══════════════════════════════════════════════
+/* ─── START / RESET ─── */
 function startGame(){
   initAudio();
   document.getElementById('start-screen').style.display='none';
@@ -1505,185 +906,35 @@ function resetGame(){
   document.getElementById('score-val').textContent='0%';
   document.getElementById('result-modal').classList.remove('show');
   gameActive=true;buildCovers();populateTray();startTimer();
-  const ta=document.getElementById('table-area');
-  setTimeout(()=>{ta.scrollLeft=(ta.scrollWidth-ta.clientWidth)/2;},100);
-}
-// ══════════════════════════════════════════════
-// GUIDE HIGHLIGHT / SNAP / RETURN / TIMER
-// ══════════════════════════════════════════════
-
-function clearHL(){
-  Object.values(guides).forEach(g=>g.el.classList.remove('snap-active'));
 }
 
-function hlGuides(x,y,id){
-  clearHL();
-  const item=items[id];
-  if(!item)return;
-
-  Object.entries(guides).forEach(([gid,g])=>{
-    if(placedItems[gid])return;
-    if(item.type!==g.type)return;
-    if(item.type==='napkin' && item.fold<3)return;
-
-    const r=g.el.getBoundingClientRect();
-    const cx=r.left+r.width/2;
-    const cy=r.top+r.height/2;
-    const d=Math.hypot(x-cx,y-cy);
-
-    if(d<58)g.el.classList.add('snap-active');
-  });
-}
-
-function trySnap(id,x,y){
-  const item=items[id];
-  if(!item)return false;
-
-  let best=null, bestD=9999;
-
-  Object.entries(guides).forEach(([gid,g])=>{
-    if(placedItems[gid])return;
-    if(item.type!==g.type)return;
-    if(item.type==='napkin' && item.fold<3)return;
-
-    const r=g.el.getBoundingClientRect();
-    const cx=r.left+r.width/2;
-    const cy=r.top+r.height/2;
-    const d=Math.hypot(x-cx,y-cy);
-
-    if(d<60 && d<bestD){
-      best={gid,g};
-      bestD=d;
-    }
-  });
-
-  if(best){
-    snapItem(id,best.gid,best.g);
-    return true;
-  }
-  return false;
-}
-
-function snapItem(id,gid,g){
-  const el=document.getElementById(id);
-  const item=items[id];
-  const sz=SZ[item.type];
-  let offsetX = 0;
-  let offsetY = 0;
-  if(item.type === 'fork')  offsetX = -2;
-  if(item.type === 'knife') offsetX =  2;
-  if(item.type === 'spoon') offsetX =  2;
-  if(item.type === 'napkin') offsetY = 4;
-  if(item.type === 'glass')  { offsetX = -2; offsetY = -2; }
-  if(item.type === 'bread')  { offsetX = -2; offsetY =  2; }
-  const gP=g.el.parentNode;
-
-  el.classList.remove('dragging');
-  el.classList.add('placed');
-
-  const rect = g.el.getBoundingClientRect();
-  const parentRect = g.el.parentNode.getBoundingClientRect();
-
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  el.style.position = 'absolute';
-  elel.style.left = (centerX - parentRect.left - sz.w/2 + offsetX) + 'px';
-  el.style.top  = (centerY - parentRect.top  - sz.h/2 + offsetY) + 'px';
-  el.style.zIndex='20';
-
-  gP.appendChild(el);
-
-  // If napkin came from tray card, remove card shell
-  if(item.type==='napkin'){
-    const card=document.getElementById(`card-${id}`);
-    if(card)card.remove();
-  }
-
-  placedItems[gid]=id;
-  item.placed=true;
-  g.el.classList.add('filled');
-  playSnap();
-  updateScore();
-}
-
-function backToTray(id){
-  const el=document.getElementById(id);
-  const item=items[id];
-  if(!el||!item)return;
-
-  el.classList.remove('dragging','placed','shaking');
-  el.style.position='relative';
-  el.style.left='';
-  el.style.top='';
-  el.style.zIndex='';
-  el.style.transform='';
-
-  const tray=document.getElementById('tray');
-
-  if(item.type==='napkin'){
-    let card=document.getElementById(`card-${id}`);
-    if(!card){
-      card=buildNapkinCard(id,el);
-      tray.appendChild(card);
-      setupDrag(id);
-    }else{
-      card.appendChild(el);
-      tray.appendChild(card);
-    }
-  }else{
-    tray.appendChild(el);
-  }
-
-  playDrop();
-}
-
+/* ─── TIMER ─── */
 function startTimer(){
   clearInterval(timerInterval);
   timeLeft=90;
   const tv=document.getElementById('timer-val');
-  tv.textContent=timeLeft;
-  tv.classList.remove('urgent');
-
+  tv.textContent=timeLeft;tv.classList.remove('urgent');
   timerInterval=setInterval(()=>{
     if(!gameActive)return;
-
-    timeLeft--;
-    tv.textContent=timeLeft;
-
+    timeLeft--;tv.textContent=timeLeft;
     if(timeLeft<=20)tv.classList.add('urgent');
-
-    if(timeLeft<=0){
-      clearInterval(timerInterval);
-      checkTable();
-    }
+    if(timeLeft<=0){clearInterval(timerInterval);checkTable();}
   },1000);
 }
-/* =========================================
-   MOBILE TABLE SCALE HEIGHT HELPER
-========================================= */
+
+/* ─── MOBILE SCALE ─── */
 function refreshMobileTableScale(){
   const scale=document.getElementById('table-scale');
-  const wrap=document.getElementById('table-wrap');
-  if(!scale || !wrap) return;
-
-  let factor = 1;
-
-  if(window.innerWidth <= 480){
-    factor = Math.min(window.innerWidth / 800, 0.58);
-  }else if(window.innerWidth <= 768){
-    factor = Math.min(window.innerWidth / 800, 0.66);
-  }else{
-    factor = 1;
-  }
-
-  scale.style.transform = `scale(${factor})`;
-  wrap.style.height = `${560 * factor}px`;
+  const wrap =document.getElementById('table-wrap');
+  if(!scale||!wrap)return;
+  let factor=1;
+  if(window.innerWidth<=480)      factor=Math.min(window.innerWidth/800,.58);
+  else if(window.innerWidth<=768) factor=Math.min(window.innerWidth/800,.66);
+  scale.style.transform=`scale(${factor})`;
+  wrap.style.height=`${560*factor}px`;
 }
-
 window.addEventListener('load', refreshMobileTableScale);
-window.addEventListener('resize', refreshMobileTableScale);
-
+window.addEventListener('resize',refreshMobileTableScale);
 </script>
 </body>
 </html>

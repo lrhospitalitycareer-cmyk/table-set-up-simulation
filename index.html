@@ -330,16 +330,6 @@ let timerInterval=null, timeLeft=90, gameActive=false;
 let placedItems={}, items={}, guides={}, idc=0, _gid=0;
 const SEATS=['bottom','top','left','right'];
 
-/* ─────────────────────────────────────────────────────────────────
-   TABLE GEOMETRY
-   Runner-H centre Y = 267 + 13 = 280
-   Runner-V centre X = 387 + 13 = 400
-   Table centre = (400, 280)
-
-   Cover left = 280px → plate X within cover = 120px → abs X = 280+120 = 400 ✓
-   Top/bottom are mirror-symmetric on the same vertical axis ✓
-─────────────────────────────────────────────────────────────────── */
-
 /* Plate centre within cover-inner (px) */
 const SEAT_PX = { bottom:120, top:120, left:120, right:120 };
 const SEAT_PY = { bottom:82,  top:140, left:100, right:100 };
@@ -669,7 +659,7 @@ function setupDrag(id){
 }
 
 function getP(e){
-  if(e.touches&&e.touches.length)         return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.touches&&e.touches.length)              return{x:e.touches[0].clientX,y:e.touches[0].clientY};
   if(e.changedTouches&&e.changedTouches.length) return{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
   return{x:e.clientX,y:e.clientY};
 }
@@ -783,52 +773,45 @@ function trySnap(id,x,y){
   return false;
 }
 
-function getTableScale(){
-  const s=document.getElementById('table-scale');
-  if(!s)return 1;
-  const m=(s.style.transform||'').match(/scale\(([^)]+)\)/);
-  return m?parseFloat(m[1]):1;
-}
-
-{
+/* ─────────────────────────────────────────────────────────────────
+   FIX: Use offsetLeft/offsetTop/offsetWidth/offsetHeight instead of
+   getBoundingClientRect(). These return CSS layout coordinates that
+   are scale-independent, so placement is pixel-perfect on mobile at
+   any scale factor without any manual scale math.
+─────────────────────────────────────────────────────────────────── */
 function snapItem(id,gid,g){
   const el=document.getElementById(id);
   const item=items[id];
+  const sz=SZ[item.type];
 
   el.classList.remove('dragging');
   el.classList.add('placed');
 
-  const guideRect = g.el.getBoundingClientRect();
-  const parentRect = g.el.parentNode.getBoundingClientRect();
-  const scale = getTableScale();
+  // offsetLeft/Top give position relative to offsetParent in CSS (layout) pixels —
+  // unaffected by any CSS transform on ancestor elements.
+  const gL = g.el.offsetLeft;
+  const gT = g.el.offsetTop;
+  const gW = g.el.offsetWidth;
+  const gH = g.el.offsetHeight;
 
-  // exact center of guide converted back into unscaled parent coordinates
-  const centerX = ((guideRect.left - parentRect.left) + guideRect.width / 2) / scale;
-  const centerY = ((guideRect.top  - parentRect.top ) + guideRect.height / 2) / scale;
-
+  // Centre the item over the guide centre, in the same coordinate space.
   el.style.position = 'absolute';
-  el.style.left = centerX + 'px';
-  el.style.top  = centerY + 'px';
-  el.style.margin = '0';
-  el.style.zIndex = '20';
+  el.style.left     = (gL + gW/2 - sz.w/2) + 'px';
+  el.style.top      = (gT + gH/2 - sz.h/2) + 'px';
+  el.style.margin   = '0';
+  el.style.zIndex   = '20';
 
   const rot = SEAT_ROT[g.seat] || 0;
-  el.style.transform = `translate(-50%, -50%)${rot ? ` rotate(${rot}deg)` : ''}`;
+  el.style.transform = rot ? `rotate(${rot}deg)` : '';
 
+  // Append to guide's parent (cover-inner or center-zone) — same element
+  // that offsetLeft/Top are measured relative to.
   g.el.parentNode.appendChild(el);
 
   if(item.type==='napkin'){
     const card=document.getElementById(`card-${id}`);
     if(card)card.remove();
   }
-
-  placedItems[gid]=id;
-  item.placed=true;
-  g.el.classList.add('filled');
-  playSnap();
-  updateScore();
-}
-
 
   placedItems[gid]=id;
   item.placed=true;

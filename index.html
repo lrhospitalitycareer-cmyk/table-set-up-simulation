@@ -790,28 +790,30 @@ function getTableScale(){
   return m?parseFloat(m[1]):1;
 }
 
+{
 function snapItem(id,gid,g){
   const el=document.getElementById(id);
   const item=items[id];
-  const sz=SZ[item.type];
 
   el.classList.remove('dragging');
   el.classList.add('placed');
 
-  const rect=g.el.getBoundingClientRect();
-  const parentRect=g.el.parentNode.getBoundingClientRect();
-  const cx=rect.left+rect.width/2;
-  const cy=rect.top +rect.height/2;
-  const scale=getTableScale();
+  const guideRect = g.el.getBoundingClientRect();
+  const parentRect = g.el.parentNode.getBoundingClientRect();
+  const scale = getTableScale();
 
-  el.style.position='absolute';
-  el.style.left=((cx - parentRect.left)/scale - sz.w/2)+'px';
-  el.style.top =((cy - parentRect.top )/scale - sz.h/2)+'px';
-  el.style.margin='0';
-  el.style.zIndex='20';
+  // exact center of guide converted back into unscaled parent coordinates
+  const centerX = ((guideRect.left - parentRect.left) + guideRect.width / 2) / scale;
+  const centerY = ((guideRect.top  - parentRect.top ) + guideRect.height / 2) / scale;
+
+  el.style.position = 'absolute';
+  el.style.left = centerX + 'px';
+  el.style.top  = centerY + 'px';
+  el.style.margin = '0';
+  el.style.zIndex = '20';
 
   const rot = SEAT_ROT[g.seat] || 0;
-  el.style.transform = rot ? `rotate(${rot}deg)` : '';
+  el.style.transform = `translate(-50%, -50%)${rot ? ` rotate(${rot}deg)` : ''}`;
 
   g.el.parentNode.appendChild(el);
 
@@ -819,6 +821,14 @@ function snapItem(id,gid,g){
     const card=document.getElementById(`card-${id}`);
     if(card)card.remove();
   }
+
+  placedItems[gid]=id;
+  item.placed=true;
+  g.el.classList.add('filled');
+  playSnap();
+  updateScore();
+}
+
 
   placedItems[gid]=id;
   item.placed=true;

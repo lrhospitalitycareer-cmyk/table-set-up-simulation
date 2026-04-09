@@ -823,8 +823,12 @@ function snapItem(id, gid, g){
 
   // visual rotation only
   const rot = SEAT_ROT[g.seat] || 0;
-  el.style.transformOrigin = 'center center';
-  el.style.transform = rot ? `rotate(${rot}deg)` : '';
+const scale = g.seat === 'bottom' ? 1.08 : 1;
+
+el.style.transformOrigin = 'center center';
+el.style.transform = rot
+  ? `rotate(${rot}deg) scale(${scale})`
+  : `scale(${scale})`;
 
   parent.appendChild(el);
 

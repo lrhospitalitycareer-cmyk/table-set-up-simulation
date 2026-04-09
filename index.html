@@ -479,117 +479,88 @@ const SVG_FN={fork:svgFork,knife:svgKnife,spoon:svgSpoon,bread:svgBread,glass:sv
 
 /* ─── BUILD COVERS ─── */
 function buildCovers(){
-  const table=document.getElementById('table');
+  const table = document.getElementById('table');
+
+  // true base layout = bottom cover only
+  const BASE_GUIDES = {
+    napkin: { x: 120, y: 100, w: 70, h: 70, shape: 'rect', label: 'Napkin' },
+    fork:   { x: 50,  y: 100, w: 24, h: 70, shape: 'rect', label: 'Fork'   },
+    knife:  { x: 190, y: 100, w: 24, h: 70, shape: 'rect', label: 'Knife'  },
+    spoon:  { x: 215, y: 100, w: 24, h: 70, shape: 'rect', label: 'Spoon'  },
+    glass:  { x: 192, y: 56,  w: 44, h: 56, shape: 'rect', label: 'Glass'  },
+    bread:  { x: 8,   y: 100, w: 54, h: 54, shape: 'circle', label: 'B&B'  }
+  };
+
+  function rotatePoint(x, y, seat){
+    const cx = 120;
+    const cy = 120;
+
+    const dx = x - cx;
+    const dy = y - cy;
+
+    if(seat === 'bottom') return { x, y };
+    if(seat === 'top')    return { x: cx - dx, y: cy - dy };
+    if(seat === 'left')   return { x: cx - dy, y: cy + dx };
+    if(seat === 'right')  return { x: cx + dy, y: cy - dx };
+
+    return { x, y };
+  }
 
   SEATS.forEach(seat=>{
-    const cover=document.createElement('div');
-    cover.className=`cover ${seat}`;
-    cover.id=`cover-${seat}`;
+    const cover = document.createElement('div');
+    cover.className = `cover ${seat}`;
+    cover.id = `cover-${seat}`;
 
-    const inner=document.createElement('div');
-    inner.className='cover-inner';
+    const inner = document.createElement('div');
+    inner.className = 'cover-inner';
     cover.appendChild(inner);
 
-    const px = SEAT_PX[seat];
-    const py = SEAT_PY[seat];
-
-    GDEFS.forEach(gd => {
-      const gid = `guide-${seat}-${gd.t}`;
+    Object.entries(BASE_GUIDES).forEach(([type, gd])=>{
+      const gid = `guide-${seat}-${type}`;
       const el = document.createElement('div');
 
-      const isRect = gd.s !== 'circle';
+      const rotated = rotatePoint(gd.x, gd.y, seat);
 
-      // BASE = bottom layout
-      let x = gd.dx;
-      let y = gd.dy;
       let w = gd.w;
       let h = gd.h;
 
-      // rotate layout
-      if (seat === 'top') {
-        x = -gd.dx;
-        y = -gd.dy;
-      } else if (seat === 'left') {
-        x = -gd.dy;
-        y = gd.dx;
-        if (isRect) [w, h] = [gd.h, gd.w];
-      } else if (seat === 'right') {
-        x = gd.dy;
-        y = -gd.dx;
-        if (isRect) [w, h] = [gd.h, gd.w];
+      // swap width/height only for rotated rectangular items
+      if ((seat === 'left' || seat === 'right') && gd.shape !== 'circle') {
+        [w, h] = [gd.h, gd.w];
       }
 
-      const L = px + x - w / 2;
-      const T = py + y - h / 2;
-
-      el.className = `guide${gd.s === 'circle' ? ' circle' : ''}`;
+      el.className = `guide${gd.shape === 'circle' ? ' circle' : ''}`;
       el.id = gid;
-      el.dataset.type = gd.t;
+      el.dataset.type = type;
       el.dataset.seat = seat;
-      el.style.left = `${L}px`;
-      el.style.top = `${T}px`;
+      el.style.left = `${rotated.x - w / 2}px`;
+      el.style.top = `${rotated.y - h / 2}px`;
       el.style.width = `${w}px`;
       el.style.height = `${h}px`;
 
       const lbl = document.createElement('div');
       lbl.className = 'guide-lbl';
-      lbl.textContent = gd.l;
+      lbl.textContent = gd.label;
       el.appendChild(lbl);
 
       inner.appendChild(el);
-      guides[gid] = { type: gd.t, seat, el };
+      guides[gid] = { type, seat, el };
     });
 
     table.appendChild(cover);
   });
 
-  guides['guide-salt']  ={type:'salt',   seat:'center', el:document.getElementById('guide-salt')};
-  guides['guide-pepper']={type:'pepper', seat:'center', el:document.getElementById('guide-pepper')};
-}
-
-/* ─── HELPER ─── */
-function getGuideCenter(el) {
-  return {
-    x: el.offsetLeft + el.offsetWidth / 2,
-    y: el.offsetTop + el.offsetHeight / 2
+  guides['guide-salt'] = {
+    type: 'salt',
+    seat: 'center',
+    el: document.getElementById('guide-salt')
   };
-}
 
-/* ─── SNAP (FIXED) ─── */
-function snapItem(id, gid, g){
-  const el = document.getElementById(id);
-  const item = items[id];
-  const sz = SZ[item.type];
-
-  el.classList.remove('dragging');
-  el.classList.add('placed');
-
-  const parent = g.el.parentElement;
-  const { x, y } = getGuideCenter(g.el);
-
-  el.style.position = 'absolute';
-  el.style.left = `${x - sz.w / 2}px`;
-  el.style.top = `${y - sz.h / 2}px`;
-  el.style.margin = '0';
-  el.style.zIndex = '20';
-
-  // rotate only visually
-  const rot = SEAT_ROT[g.seat] || 0;
-  el.style.transform = rot ? `rotate(${rot}deg)` : '';
-
-  parent.appendChild(el);
-
-  if(item.type==='napkin'){
-    const card=document.getElementById(`card-${id}`);
-    if(card)card.remove();
-  }
-
-  placedItems[gid]=id;
-  item.placed=true;
-  g.el.classList.add('filled');
-
-  playSnap();
-  updateScore();
+  guides['guide-pepper'] = {
+    type: 'pepper',
+    seat: 'center',
+    el: document.getElementById('guide-pepper')
+  };
 }
 
 /* ─── CREATE ITEM ─── */
@@ -821,54 +792,49 @@ function trySnap(id,x,y){
   if(best){snapItem(id,best.gid,best.g);return true;}
   return false;
 }
+function snapItem(id, gid, g){
+  const el = document.getElementById(id);
+  const item = items[id];
+  if(!el || !item) return;
 
-/* ─────────────────────────────────────────────────────────────────
-   FIX: Use offsetLeft/offsetTop/offsetWidth/offsetHeight instead of
-   getBoundingClientRect(). These return CSS layout coordinates that
-   are scale-independent, so placement is pixel-perfect on mobile at
-   any scale factor without any manual scale math.
-─────────────────────────────────────────────────────────────────── */
-function snapItem(id,gid,g){
-  const el=document.getElementById(id);
-  const item=items[id];
-  const sz=SZ[item.type];
+  const parent = g.el.parentElement;
+
+  // get guide center in same parent coordinate system
+  const gx = g.el.offsetLeft + g.el.offsetWidth / 2;
+  const gy = g.el.offsetTop  + g.el.offsetHeight / 2;
+
+  // use actual rendered item box size
+  const iw = el.offsetWidth;
+  const ih = el.offsetHeight;
 
   el.classList.remove('dragging');
   el.classList.add('placed');
 
-  // offsetLeft/Top give position relative to offsetParent in CSS (layout) pixels —
-  // unaffected by any CSS transform on ancestor elements.
-  const gL = g.el.offsetLeft;
-  const gT = g.el.offsetTop;
-  const gW = g.el.offsetWidth;
-  const gH = g.el.offsetHeight;
-
-  // Centre the item over the guide centre, in the same coordinate space.
   el.style.position = 'absolute';
-  el.style.left     = (gL + gW/2 - sz.w/2) + 'px';
-  el.style.top      = (gT + gH/2 - sz.h/2) + 'px';
-  el.style.margin   = '0';
-  el.style.zIndex   = '20';
+  el.style.left = `${gx - iw / 2}px`;
+  el.style.top  = `${gy - ih / 2}px`;
+  el.style.margin = '0';
+  el.style.zIndex = '20';
 
+  // visual rotation only
   const rot = SEAT_ROT[g.seat] || 0;
+  el.style.transformOrigin = 'center center';
   el.style.transform = rot ? `rotate(${rot}deg)` : '';
 
-  // Append to guide's parent (cover-inner or center-zone) — same element
-  // that offsetLeft/Top are measured relative to.
-  g.el.parentNode.appendChild(el);
+  parent.appendChild(el);
 
-  if(item.type==='napkin'){
-    const card=document.getElementById(`card-${id}`);
-    if(card)card.remove();
+  if(item.type === 'napkin'){
+    const card = document.getElementById(`card-${id}`);
+    if(card) card.remove();
   }
 
-  placedItems[gid]=id;
-  item.placed=true;
+  placedItems[gid] = id;
+  item.placed = true;
   g.el.classList.add('filled');
+
   playSnap();
   updateScore();
 }
-
 /* ─── BACK TO TRAY ─── */
 function backToTray(id){
   const el=document.getElementById(id);

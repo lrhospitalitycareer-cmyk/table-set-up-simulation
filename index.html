@@ -332,7 +332,7 @@ const SEATS=['bottom','top','left','right'];
 
 /* Plate centre within cover-inner (px) */
 const SEAT_PX = { bottom:120, top:120, left:120, right:120 };
-const SEAT_PY = { bottom:82,  top:140, left:100, right:100 };
+const SEAT_PY = { bottom:82,  top:158, left:120, right:120 };
 /* Visual rotation applied to placed items */
 const SEAT_ROT = { bottom:0, top:180, left:90, right:-90 };
 
@@ -480,10 +480,12 @@ const SVG_FN={fork:svgFork,knife:svgKnife,spoon:svgSpoon,bread:svgBread,glass:sv
 /* ─── BUILD COVERS ─── */
 function buildCovers(){
   const table=document.getElementById('table');
+
   SEATS.forEach(seat=>{
     const cover=document.createElement('div');
     cover.className=`cover ${seat}`;
     cover.id=`cover-${seat}`;
+
     const inner=document.createElement('div');
     inner.className='cover-inner';
     cover.appendChild(inner);
@@ -491,56 +493,103 @@ function buildCovers(){
     const px = SEAT_PX[seat];
     const py = SEAT_PY[seat];
 
-    GDEFS.forEach(gd=>{
-      const gid=`guide-${seat}-${gd.t}`;
-      const el=document.createElement('div');
+    GDEFS.forEach(gd => {
+      const gid = `guide-${seat}-${gd.t}`;
+      const el = document.createElement('div');
 
-      let rdx, rdy, rw, rh;
-      const isRect = (gd.s !== 'circle');
-      switch(seat){
-        case 'top':
-          rdx = -gd.dx; rdy = -gd.dy;
-          rw = gd.w;    rh  = gd.h;
-          break;
-        case 'left':
-          rdx = -gd.dy; rdy = gd.dx;
-          rw  = isRect ? gd.h : gd.w;
-          rh  = isRect ? gd.w : gd.h;
-          break;
-        case 'right':
-          rdx = gd.dy;  rdy = -gd.dx;
-          rw  = isRect ? gd.h : gd.w;
-          rh  = isRect ? gd.w : gd.h;
-          break;
-        default: // bottom
-          rdx = gd.dx;  rdy = gd.dy;
-          rw = gd.w;    rh  = gd.h;
+      const isRect = gd.s !== 'circle';
+
+      // BASE = bottom layout
+      let x = gd.dx;
+      let y = gd.dy;
+      let w = gd.w;
+      let h = gd.h;
+
+      // rotate layout
+      if (seat === 'top') {
+        x = -gd.dx;
+        y = -gd.dy;
+      } else if (seat === 'left') {
+        x = -gd.dy;
+        y = gd.dx;
+        if (isRect) [w, h] = [gd.h, gd.w];
+      } else if (seat === 'right') {
+        x = gd.dy;
+        y = -gd.dx;
+        if (isRect) [w, h] = [gd.h, gd.w];
       }
 
-      const L = px + rdx - rw/2;
-      const T = py + rdy - rh/2;
+      const L = px + x - w / 2;
+      const T = py + y - h / 2;
 
-      el.className = `guide${gd.s==='circle' ? ' circle' : ''}`;
-      el.id        = gid;
+      el.className = `guide${gd.s === 'circle' ? ' circle' : ''}`;
+      el.id = gid;
       el.dataset.type = gd.t;
       el.dataset.seat = seat;
-      el.style.cssText = `width:${rw}px;height:${rh}px;left:${L}px;top:${T}px;`;
+      el.style.left = `${L}px`;
+      el.style.top = `${T}px`;
+      el.style.width = `${w}px`;
+      el.style.height = `${h}px`;
 
-      const lbl=document.createElement('div');
-      lbl.className='guide-lbl';
-      lbl.textContent=gd.l;
+      const lbl = document.createElement('div');
+      lbl.className = 'guide-lbl';
+      lbl.textContent = gd.l;
       el.appendChild(lbl);
 
       inner.appendChild(el);
-      guides[gid]={type:gd.t, seat, el};
+      guides[gid] = { type: gd.t, seat, el };
     });
 
     table.appendChild(cover);
   });
 
-  // Register cruet guides (in HTML)
   guides['guide-salt']  ={type:'salt',   seat:'center', el:document.getElementById('guide-salt')};
   guides['guide-pepper']={type:'pepper', seat:'center', el:document.getElementById('guide-pepper')};
+}
+
+/* ─── HELPER ─── */
+function getGuideCenter(el) {
+  return {
+    x: el.offsetLeft + el.offsetWidth / 2,
+    y: el.offsetTop + el.offsetHeight / 2
+  };
+}
+
+/* ─── SNAP (FIXED) ─── */
+function snapItem(id, gid, g){
+  const el = document.getElementById(id);
+  const item = items[id];
+  const sz = SZ[item.type];
+
+  el.classList.remove('dragging');
+  el.classList.add('placed');
+
+  const parent = g.el.parentElement;
+  const { x, y } = getGuideCenter(g.el);
+
+  el.style.position = 'absolute';
+  el.style.left = `${x - sz.w / 2}px`;
+  el.style.top = `${y - sz.h / 2}px`;
+  el.style.margin = '0';
+  el.style.zIndex = '20';
+
+  // rotate only visually
+  const rot = SEAT_ROT[g.seat] || 0;
+  el.style.transform = rot ? `rotate(${rot}deg)` : '';
+
+  parent.appendChild(el);
+
+  if(item.type==='napkin'){
+    const card=document.getElementById(`card-${id}`);
+    if(card)card.remove();
+  }
+
+  placedItems[gid]=id;
+  item.placed=true;
+  g.el.classList.add('filled');
+
+  playSnap();
+  updateScore();
 }
 
 /* ─── CREATE ITEM ─── */

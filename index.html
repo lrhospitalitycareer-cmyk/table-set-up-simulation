@@ -258,6 +258,39 @@ body.dragging-active{overflow:hidden;touch-action:none;}
   #check-btn{font-size:13px;padding:9px 24px;}
   .item{transform:scale(.8);}.nap-card{transform:scale(.78);}
 }
+#scroll-indicator{
+  position:fixed;
+  right:10px;
+  bottom:80px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:rgba(0,0,0,.4);
+  color:#fff;
+  font-size:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+  opacity:.7;
+  backdrop-filter:blur(4px);
+  transition:.3s;
+}
+
+/* subtle pulse */
+#scroll-indicator{
+  animation:scrollPulse 1.5s infinite;
+}
+
+@keyframes scrollPulse{
+  0%,100%{transform:translateY(0);opacity:.6;}
+  50%{transform:translateY(6px);opacity:1;}
+}
+
+/* hide on desktop */
+@media(min-width:769px){
+  #scroll-indicator{display:none;}
+}
 </style>
 </head>
 <body>
@@ -297,7 +330,7 @@ body.dragging-active{overflow:hidden;touch-action:none;}
     <img src="logo.png" alt="LR Logo" onerror="this.style.display='none'">
   </div>
   <div class="hud">
-    <div class="hud-box"><div class="hud-lbl">TIME</div><div class="hud-val" id="timer-val">90</div></div>
+    <div class="hud-box"><div class="hud-lbl">TIME</div><div class="hud-val" id="timer-val">60</div></div>
     <div class="hud-box"><div class="hud-lbl">SCORE</div><div class="hud-val" id="score-val">0%</div></div>
   </div>
 </div>
@@ -333,6 +366,7 @@ body.dragging-active{overflow:hidden;touch-action:none;}
     <div id="tray"></div>
   </div>
 </div>
+<div id="scroll-indicator">↓</div>
 
 <script>
 'use strict';
@@ -361,7 +395,7 @@ function playCheck() {[440,550,660,780].forEach((f,i)=>setTimeout(()=>tone(f,.1,
 function playDrop()  {tone(300,.06,'sine',.1);}
 
 /* ─── STATE ─── */
-let timerInterval=null, timeLeft=90, gameActive=false;
+let timerInterval=null, timeLeft=60, gameActive=false;
 let placedItems={}, items={}, guides={}, idc=0, _gid=0;
 const SEATS=['bottom','top','left','right'];
 
@@ -973,7 +1007,7 @@ function resetGame(){
 /* ─── TIMER ─── */
 function startTimer(){
   clearInterval(timerInterval);
-  timeLeft=90;
+  timeLeft=60;
   const tv=document.getElementById('timer-val');
   tv.textContent=timeLeft;tv.classList.remove('urgent');
   timerInterval=setInterval(()=>{
@@ -997,6 +1031,18 @@ function refreshMobileTableScale(){
 }
 window.addEventListener('load', refreshMobileTableScale);
 window.addEventListener('resize',refreshMobileTableScale);
+document.getElementById('scroll-indicator').addEventListener('click', ()=>{
+  window.scrollBy({ top: window.innerHeight * 0.6, behavior: 'smooth' });
+});
+let scrollHint = document.getElementById('scroll-indicator');
+
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > 50){
+    scrollHint.style.opacity = '0';
+  } else {
+    scrollHint.style.opacity = '0.7';
+  }
+});
 </script>
 </body>
 </html>
